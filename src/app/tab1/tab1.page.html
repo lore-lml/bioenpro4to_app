@@ -1,17 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      {{title}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-title>Categorie</ion-title>
+  <ion-slides [options]="categoryOpts">
+    <ion-slide *ngFor="let c of categoryInfo">
+      <ion-card button="true">
+        <ion-card-content>
+          <img [src]="c.imgSrc" alt="img">
+          <ion-card-title>{{c.title}}</ion-card-title>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+  <ion-title>Ultimi aggiornamenti</ion-title>
+  <ion-list lines="full">
+    <ion-item *ngFor="let item of lastUpdate" button="true">
+      <img [src]="item.imgSrc" alt="">
+      <ion-label>{{item.title}}</ion-label>
+      <ion-text>{{item.timestamp}}</ion-text>
+    </ion-item>
+  </ion-list>
+
+
 </ion-content>

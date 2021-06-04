@@ -1,0 +1,30 @@
+ion-content{
+  ion-title{
+    margin-top: 30px;
+  }
+
+  ion-list{
+    height: 45vh;
+    margin-top: 20px;
+    overflow-y: auto;
+    background: rgba(0,0,0,.0);
+
+    ion-item{
+      --border-color: rgba(255,255,255, .5);
+
+      img{
+        width: 30px;
+        filter: grayscale(100%);
+        opacity: .5;
+      }
+
+      ion-label{
+        margin: 0 50px;
+      }
+
+      ion-text{
+        color: rgba(255,255,255, .5);
+      }
+    }
+  }
+}

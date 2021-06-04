@@ -1,0 +1,7 @@
+{
+  "name": "bioenpro4to_app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

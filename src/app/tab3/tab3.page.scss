@@ -1,0 +1,40 @@
+section{
+  margin-top: 30px;
+  ion-title{
+    padding: 0;
+    margin: 0;
+  }
+}
+ion-text{
+  color: rgba(255,255,255,.5);
+}
+
+ion-grid{
+  margin: 0 15px;
+  text-align: center;
+  img{
+    width: 100px;
+  }
+}
+#profile-name{
+  display: flex;
+  align-items: center;
+}
+#profile-name-content{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+
+  ion-title{
+    padding: 0;
+    margin: 0;
+  }
+}
+
+ion-card{
+  padding-bottom: 15px;
+  ion-item{
+    --border-color: rgba(255,255,255, .5);
+  }
+}
+

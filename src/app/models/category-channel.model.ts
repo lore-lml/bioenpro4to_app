@@ -2,6 +2,7 @@ import {Channel, InfoReader} from './channel.model';
 import {ActorChannel} from './actor-channel.model';
 import {ChannelInfo} from '../../../streams_lib/pkg';
 import {Packet} from './packet.model';
+import {Feed} from './feed.model';
 
 export enum Category{
   trucks,
@@ -40,6 +41,12 @@ export class CategoryChannel extends Channel implements InfoReader{
     }catch (_){
       return false;
     }
+  }
+
+  getNewsFeed(): Feed[] {
+    return this.actorChannels
+      .map(ch => ch.getNewsFeed())
+      .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
   }
 
   private async readNextLayer(): Promise<boolean>{

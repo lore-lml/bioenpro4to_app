@@ -8,7 +8,7 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-title>Categorie</ion-title>
+  <ion-title class="ion-margin-start">Categorie</ion-title>
   <ion-slides [options]="categoryOpts">
     <ion-slide *ngFor="let c of categoryInfo">
       <ion-card button="true">
@@ -20,7 +20,7 @@
     </ion-slide>
   </ion-slides>
 
-  <ion-title>Ultimi aggiornamenti</ion-title>
+  <ion-title class="ion-margin-start">Ultimi aggiornamenti</ion-title>
   <ion-list lines="full" *ngIf="!isLoading else skeleton">
     <ion-item *ngFor="let item of lastUpdate" button="true">
       <img [src]="item.imgSrc" alt="">

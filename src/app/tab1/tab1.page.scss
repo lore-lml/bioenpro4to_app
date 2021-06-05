@@ -1,6 +1,8 @@
 ion-content{
   ion-title{
-    margin-top: 30px;
+    margin-top: 40px;
+    color: rgba(255,255,255,.5);
+    padding: 0;
   }
 
   ion-card-content{
@@ -11,7 +13,8 @@ ion-content{
 
   ion-list{
     height: 45vh;
-    margin-top: 20px;
+    margin-top: 10px;
+    padding: 0 10px;
     overflow-y: auto;
     background: rgba(0,0,0,.0);
 

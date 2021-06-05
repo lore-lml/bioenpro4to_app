@@ -2,9 +2,10 @@ ion-card{
   padding: 10px 5px;
 }
 section{
-  margin-top: 30px;
+  margin-top: 40px;
 
-  ion-text{
+  ion-title{
     color: rgba(255,255,255, .5);
+    padding: 0;
   }
 }

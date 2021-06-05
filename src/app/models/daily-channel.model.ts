@@ -2,6 +2,7 @@ import {Channel} from './channel.model';
 import {Category} from './category-channel.model';
 import {ChannelInfo} from '../../../streams_lib/pkg';
 import {Packet} from './packet.model';
+import {Feed} from './feed.model';
 
 export class DailyChannel extends Channel{
   category: Category;
@@ -27,5 +28,9 @@ export class DailyChannel extends Channel{
 
   private static zeroPad(value: number): string{
     return value >= 10 ? ''+value : '0'+value;
+  }
+
+  getNewsFeed(): Feed[] {
+    return undefined;
   }
 }

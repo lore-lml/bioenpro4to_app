@@ -39,4 +39,10 @@ export class ActorChannel extends Channel implements InfoReader{
       return false;
     }
   }
+
+  getNewsFeed() {
+    return this.dailyChannels
+      .map(ch => ch.getNewsFeed())
+      .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
+  }
 }

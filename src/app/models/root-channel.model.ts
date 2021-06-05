@@ -2,6 +2,7 @@ import {ChannelInfo} from '../../../streams_lib/pkg';
 import {Category, CategoryChannel} from './category-channel.model';
 import {Channel, InfoReader} from './channel.model';
 import {Packet} from './packet.model';
+import {Feed} from './feed.model';
 
 export class RootChannel extends Channel implements InfoReader{
   categoryChannels: CategoryChannel[];
@@ -39,6 +40,12 @@ export class RootChannel extends Channel implements InfoReader{
     }catch (_){
       return false;
     }
+  }
+
+  getNewsFeed(): Feed[]{
+    return this.categoryChannels
+      .map(ch => ch.getNewsFeed())
+      .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
   }
 
   private async readNextLayer(): Promise<boolean>{

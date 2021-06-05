@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {ChannelManagerService} from '../services/channel-manager.service';
 
 @Component({
   selector: 'app-tab1',
@@ -25,6 +26,8 @@ export class Tab1Page {
     {imgSrc: 'assets/categories/biocells.svg', title: 'Actor5', timestamp: '6.55 - 17/05/2012'},
     {imgSrc: 'assets/categories/scales.svg', title: 'Actor6', timestamp: '5.55 - 16/05/2012'},
   ];
-  constructor() {}
+  constructor(channelManager: ChannelManagerService) {
+    channelManager.rootObservable.subscribe(root => console.log(root));
+  }
 
 }

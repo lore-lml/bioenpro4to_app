@@ -11,7 +11,7 @@ export class TabsPage {
   selectedTab: number;
   constructor() {
     this.tabs = [
-      {title: 'Monitora', icon: 'compass'},
+      {title: 'Monitoraggio', icon: 'compass'},
       {title: 'Statistiche', icon: 'stats-chart'},
       {title: 'Profilo', icon: 'person'}
     ];

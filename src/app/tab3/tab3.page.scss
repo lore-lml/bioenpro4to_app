@@ -35,6 +35,13 @@ ion-card{
   padding-bottom: 15px;
   ion-item{
     --border-color: rgba(255,255,255, .5);
+
+    ion-title{
+      font-size: 1em;
+    }
+    ion-text{
+      font-size: .85em;
+    }
   }
 }
 

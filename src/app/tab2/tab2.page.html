@@ -7,5 +7,30 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <section>
+    <ion-text class="ion-margin-start">Attori attivi</ion-text>
+    <ion-card>
+      <canvas baseChart
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType">
+      </canvas>
+    </ion-card>
+  </section>
 
+  <section>
+    <ion-text class="ion-margin-start">Rifiuti raccolti (Kg)</ion-text>
+    <ion-card>
+      <canvas baseChart
+              [data]="pieChartData"
+              [labels]="pieChartLabels"
+              [chartType]="pieChartType"
+              [options]="pieChartOptions"
+              [colors]="pieChartColors"
+              [legend]="pieChartLegend">
+      </canvas>
+    </ion-card>
+  </section>
 </ion-content>

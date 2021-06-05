@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
-  title = 'Monitora';
+  title = 'Monitoraggio';
   categoryOpts = {
     freeMode: true,
     slidesPerView: 2.5

@@ -21,7 +21,7 @@
   </ion-slides>
 
   <ion-title>Ultimi aggiornamenti</ion-title>
-  <ion-list lines="full">
+  <ion-list lines="full" *ngIf="!isLoading else skeleton">
     <ion-item *ngFor="let item of lastUpdate" button="true">
       <img [src]="item.imgSrc" alt="">
       <ion-label>{{item.title}}</ion-label>
@@ -29,5 +29,18 @@
     </ion-item>
   </ion-list>
 
+  <ng-template id="skeleton" #skeleton>
+    <ion-list>
+      <ion-item *ngFor="let item of [1,1,1,1,1]">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2"><div class="square"></div></ion-col>
+            <ion-col size="5"><ion-skeleton-text animated style="width: 85%"></ion-skeleton-text></ion-col>
+            <ion-col size="5"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+  </ng-template>
 
 </ion-content>

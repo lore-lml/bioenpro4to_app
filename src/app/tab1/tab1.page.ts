@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ChannelManagerService} from '../services/channel-manager.service';
+import {LoadingController} from '@ionic/angular';
+import {RootChannel} from '../models/root-channel.model';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page implements OnInit{
 
   title = 'Monitoraggio';
   categoryOpts = {
@@ -26,8 +28,30 @@ export class Tab1Page {
     {imgSrc: 'assets/categories/biocells.svg', title: 'Actor5', timestamp: '6.55 - 17/05/2012'},
     {imgSrc: 'assets/categories/scales.svg', title: 'Actor6', timestamp: '5.55 - 16/05/2012'},
   ];
-  constructor(channelManager: ChannelManagerService) {
-    channelManager.rootObservable.subscribe(root => console.log(root));
-  }
 
+  isLoading = true;
+  root: RootChannel;
+
+  constructor(private channelManager: ChannelManagerService, private loadingController: LoadingController) {}
+
+  ngOnInit(): void {
+    let load;
+    this.loadingController.create({message: 'Scaricando i dati ...', cssClass: 'my-loading'})
+      .then(loading => {
+        load = loading;
+        return loading.present();
+      })
+      .catch(err => console.error(err));
+
+    let counter = 0;
+    this.channelManager.rootObservable.subscribe(root => {
+      if (root === undefined) {
+        counter++;
+      }
+      if(root !== undefined || counter >= 2){
+        load.dismiss();
+        this.isLoading = false;
+      }
+    });
+    }
 }

@@ -43,10 +43,23 @@ export class CategoryChannel extends Channel implements InfoReader{
     }
   }
 
-  getNewsFeed(): Feed[] {
-    return this.actorChannels
-      .map(ch => ch.getNewsFeed())
-      .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
+  getNewsFeed(n: number, step: number): Feed[] {
+    const msgs =  this.actorChannels
+      .map(ch => ch.getNewsFeed(n, step))
+      .reduce((previousValue, currentValue) => previousValue.concat(currentValue))
+      .sort((a, b) => b.timestamp - a.timestamp);
+
+    const start = step*n;
+    let end = (step+1)*n;
+    const len = msgs.length;
+    if (start > len){
+      return [];
+    }
+    if (end >= len){
+      end = len-1;
+    }
+
+    return msgs.slice(start, end);
   }
 
   private async readNextLayer(): Promise<boolean>{

@@ -42,10 +42,22 @@ export class RootChannel extends Channel implements InfoReader{
     }
   }
 
-  getNewsFeed(): Feed[]{
-    return this.categoryChannels
-      .map(ch => ch.getNewsFeed())
+  getNewsFeed(n: number, step: number = 0): Feed[]{
+    const msgs =  this.categoryChannels
+      .map(ch => ch.getNewsFeed(n, step))
       .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
+
+    const start = step*n;
+    let end = (step+1)*n;
+    const len = msgs.length;
+    if (start > len){
+      return [];
+    }
+    if (end >= len){
+      end = len-1;
+    }
+
+    return msgs.slice(start, end);
   }
 
   private async readNextLayer(): Promise<boolean>{

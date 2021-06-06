@@ -7,8 +7,8 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = 'ff47c242da89c2decbbcd2a91b3da93dd5639417ac4c3f72c44d521c1fad69f30000000000000000';
-  readonly announceId = '49768e9a7f0d1fb476ee361a';
+  readonly channelId = '15a05797d8e69b50b5895247319a070931a263ec31076d4ba8ce18cdc028470c0000000000000000';
+  readonly announceId = '90b72a5f2cfabd97daaf7322';
   rootInfo: ChannelInfo;
   rootChannel: RootChannel;
   rootObservable: Observable<RootChannel>;

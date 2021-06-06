@@ -30,7 +30,39 @@ export class DailyChannel extends Channel{
     return value >= 10 ? ''+value : '0'+value;
   }
 
-  getNewsFeed(): Feed[] {
-    return undefined;
+  getNewsFeed(n: number, step: number): Feed[] {
+    const start = step*n;
+    let end = (step+1)*n;
+    const len = this.msgs.length;
+    if (start > len){
+      return [];
+    }
+    if (end >= len){
+      end = len-1;
+    }
+    return this.msgs.map(m => new Feed(this.category, this.actorId, m.timestamp))
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .slice(start, end);
+  }
+
+  async readMsgs(): Promise<boolean> {
+    const res = await this.attach();
+    if (!res){
+      return false;
+    }
+
+    await this.reader.clone().fetch_raw_msgs();
+    try {
+      while (this.reader.has_next_msg()) {
+        const m = this.reader.pop_msg();
+        const p = new Packet(m.msg_id, m.public, m.masked);
+        this.msgs.push(p);
+      }
+      console.log(this.msgs);
+      return true;
+
+    }catch(_){
+      return false;
+    }
   }
 }

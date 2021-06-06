@@ -33,16 +33,37 @@ export class ActorChannel extends Channel implements InfoReader{
         const timestamp = jsonInfo.creation_timestamp;
         this.dailyChannels.push(new DailyChannel(info, this.mainnet, this.category, this.actorId, timestamp));
       }
-      return true;
+      return await this.readNextLayer();
 
     }catch(_){
       return false;
     }
   }
 
-  getNewsFeed() {
-    return this.dailyChannels
-      .map(ch => ch.getNewsFeed())
-      .reduce((previousValue, currentValue) => previousValue.concat(currentValue));
+  getNewsFeed(n: number, step: number) {
+    const msgs = this.dailyChannels
+      .map(ch => ch.getNewsFeed(n, step))
+      .reduce((previousValue, currentValue) => previousValue.concat(currentValue))
+      .sort((a, b) => b.timestamp - a.timestamp);
+
+    const start = step*n;
+    let end = (step+1)*n;
+    const len = msgs.length;
+    if (start > len){
+      return [];
+    }
+    if (end >= len){
+      end = len-1;
+    }
+
+    return msgs.slice(start, end);
+  }
+
+  private async readNextLayer(): Promise<boolean>{
+    let success = true;
+    for (const ch of this.dailyChannels){
+      success &&= await ch.readMsgs();
+    }
+    return success;
   }
 }

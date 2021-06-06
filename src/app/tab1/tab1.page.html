@@ -21,11 +21,11 @@
   </ion-slides>
 
   <ion-title class="ion-margin-start">Ultimi aggiornamenti</ion-title>
-  <ion-list lines="full" *ngIf="!isLoading else skeleton">
-    <ion-item *ngFor="let item of lastUpdate" button="true">
-      <img [src]="item.imgSrc" alt="">
-      <ion-label>{{item.title}}</ion-label>
-      <ion-text>{{item.timestamp}}</ion-text>
+  <ion-list lines="full" *ngIf="!isLoading() else skeleton">
+    <ion-item *ngFor="let f of feed" button="true">
+      <img [src]="getFeedImg(f)" alt="">
+      <ion-label>{{f.actorId}}</ion-label>
+      <ion-text>{{f.hourDate}}</ion-text>
     </ion-item>
   </ion-list>
 

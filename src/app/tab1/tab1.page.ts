@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ChannelManagerService} from '../services/channel-manager.service';
-import {LoadingController} from '@ionic/angular';
 import {RootChannel} from '../models/root-channel.model';
+import {Feed} from '../models/feed.model';
+import {Category} from '../models/category-channel.model';
 
 @Component({
   selector: 'app-tab1',
@@ -29,29 +30,30 @@ export class Tab1Page implements OnInit{
     {imgSrc: 'assets/categories/scales.svg', title: 'Actor6', timestamp: '5.55 - 16/05/2012'},
   ];
 
-  isLoading = true;
   root: RootChannel;
+  feed: Feed[];
 
-  constructor(private channelManager: ChannelManagerService, private loadingController: LoadingController) {}
+  constructor(private channelManager: ChannelManagerService) {}
 
-  ngOnInit(): void {
-    let load;
-    this.loadingController.create({message: 'Scaricando i dati ...', cssClass: 'my-loading'})
-      .then(loading => {
-        load = loading;
-        return loading.present();
-      })
-      .catch(err => console.error(err));
-
-    let counter = 0;
-    this.channelManager.rootObservable.subscribe(root => {
-      if (root === undefined) {
-        counter++;
-      }
-      if(root !== undefined || counter >= 2){
-        load.dismiss();
-        this.isLoading = false;
-      }
+  ngOnInit() {
+    this.channelManager.root.subscribe(root => {
+      this.root = root;
+      this.feed = root.getNewsFeed(5);
     });
+  }
+
+  isLoading() {
+    return !this.channelManager.rootReady;
+  }
+
+  getFeedImg(feed: Feed){
+    switch (feed.category){
+      case Category.trucks:
+        return 'assets/categories/trucks.svg';
+      case Category.scales:
+        return 'assets/categories/scales.svg';
+      case Category.biocells:
+        return 'assets/categories/biocells.svg';
     }
+  }
 }

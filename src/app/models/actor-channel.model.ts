@@ -3,6 +3,7 @@ import {Category} from './category-channel.model';
 import {DailyChannel} from './daily-channel.model';
 import {ChannelInfo} from '../../../streams_lib/pkg';
 import {Packet} from './packet.model';
+import {Feed} from './feed.model';
 
 export class ActorChannel extends Channel implements InfoReader{
   category: Category;
@@ -40,23 +41,28 @@ export class ActorChannel extends Channel implements InfoReader{
     }
   }
 
-  getNewsFeed(n: number, step: number) {
-    const msgs = this.dailyChannels
-      .map(ch => ch.getNewsFeed(n, step))
-      .reduce((previousValue, currentValue) => previousValue.concat(currentValue))
+  getNewsFeed(n: number, step: number): Feed[]{
+    const temp = this.dailyChannels
+      .map(ch => ch.getNewsFeed(n, step));
+
+    if (temp.length <= 0){
+      return [];
+    }
+
+    const res = temp.reduce((previousValue, currentValue) => previousValue.concat(currentValue))
       .sort((a, b) => b.timestamp - a.timestamp);
 
     const start = step*n;
     let end = (step+1)*n;
-    const len = msgs.length;
+    const len = res.length;
     if (start > len){
       return [];
     }
     if (end >= len){
-      end = len-1;
+      end = len;
     }
 
-    return msgs.slice(start, end);
+    return res.slice(start, end);
   }
 
   private async readNextLayer(): Promise<boolean>{

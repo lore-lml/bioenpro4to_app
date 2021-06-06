@@ -38,8 +38,9 @@ export class DailyChannel extends Channel{
       return [];
     }
     if (end >= len){
-      end = len-1;
+      end = len;
     }
+
     return this.msgs.map(m => new Feed(this.category, this.actorId, m.timestamp))
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(start, end);
@@ -58,7 +59,7 @@ export class DailyChannel extends Channel{
         const p = new Packet(m.msg_id, m.public, m.masked);
         this.msgs.push(p);
       }
-      console.log(this.msgs);
+      //console.log(this.msgs);
       return true;
 
     }catch(_){

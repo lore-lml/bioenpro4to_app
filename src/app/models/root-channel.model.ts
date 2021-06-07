@@ -3,12 +3,15 @@ import {Category, CategoryChannel} from './category-channel.model';
 import {Channel, InfoReader} from './channel.model';
 import {Packet} from './packet.model';
 import {Feed} from './feed.model';
+import {RootState} from '../services/channel-manager.service';
 
 export class RootChannel extends Channel implements InfoReader{
   categoryChannels: CategoryChannel[];
+  state: RootState;
 
-  constructor(rootInfo: ChannelInfo, mainnet: boolean) {
+  constructor(rootInfo: ChannelInfo, mainnet: boolean, state: RootState) {
     super(rootInfo, mainnet);
+    this.state = state;
     this.categoryChannels = [];
   }
 

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ChannelManagerService} from '../services/channel-manager.service';
+import {ChannelManagerService, RootState} from '../services/channel-manager.service';
 import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
 import {Category} from '../models/category-channel.model';
@@ -33,17 +33,21 @@ export class Tab1Page implements OnInit{
   root: RootChannel;
   feed: Feed[];
 
-  constructor(private channelManager: ChannelManagerService) {}
+  constructor(private channelManager: ChannelManagerService) {
+    this.feed = [];
+  }
 
   ngOnInit() {
     this.channelManager.root.subscribe(root => {
-      this.root = root;
-      this.feed = root.getNewsFeed(5);
+      if (root !== undefined && root.state === RootState.ready) {
+        this.root = root;
+        this.feed = this.root.getNewsFeed(5);
+      }
     });
   }
 
   isLoading() {
-    return !this.channelManager.rootReady;
+    return this.channelManager.isRootLoading;
   }
 
   getFeedImg(feed: Feed){

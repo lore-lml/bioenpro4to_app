@@ -13,7 +13,7 @@ export class CategoryGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    if (!this.channelManager.rootReady){
+    if (this.channelManager.isRootLoading){
       this.router.navigate(['/']).catch(e => console.error(e));
       return false;
     }

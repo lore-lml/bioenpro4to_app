@@ -8,8 +8,8 @@ import {multicast} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = '15a05797d8e69b50b5895247319a070931a263ec31076d4ba8ce18cdc028470c0000000000000000';
-  readonly announceId = '90b72a5f2cfabd97daaf7322';
+  readonly channelId = '97a9ee591b8bd9f68eba0b74e55dc84b27b9766d35c4bf8ef24264c307111c640000000000000000';
+  readonly announceId = 'e5e26e9ae0069b63b181ed68';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateObservable: any;

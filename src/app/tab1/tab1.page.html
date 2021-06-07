@@ -11,7 +11,7 @@
   <ion-title class="ion-margin-start">Categorie</ion-title>
   <ion-slides [options]="categoryOpts">
     <ion-slide *ngFor="let c of categoryInfo">
-      <ion-card button="true">
+      <ion-card button="true" [routerLink]="c.link">
         <ion-card-content>
           <img [src]="c.imgSrc" alt="img">
           <ion-card-title>{{c.title}}</ion-card-title>

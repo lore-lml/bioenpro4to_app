@@ -17,9 +17,9 @@ export class Tab1Page implements OnInit{
     slidesPerView: 2.5
   };
   categoryInfo = [
-    {title: 'Camion',imgSrc: 'assets/categories/trucks.svg'},
-    {title: 'Pesate', imgSrc: 'assets/categories/scales.svg'},
-    {title: 'Biocelle', imgSrc: 'assets/categories/biocells.svg'},
+    {title: 'Camion', imgSrc: 'assets/categories/trucks.svg', link: '/trucks'},
+    {title: 'Pesate', imgSrc: 'assets/categories/scales.svg', link: '/scales'},
+    {title: 'Biocelle', imgSrc: 'assets/categories/biocells.svg', link: '/biocells'},
   ];
   lastUpdate = [
     {imgSrc: 'assets/categories/trucks.svg', title: 'Actor1', timestamp: '10.55 - 21/05/2012'},

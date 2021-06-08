@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Category} from '../../models/category-channel.model';
 import {ChannelManagerService} from '../../services/channel-manager.service';
 import {IonSlides} from '@ionic/angular';
+import {ChannelList, SortMode} from '../channel-list.model';
 
 @Component({
   selector: 'app-scales',
@@ -17,11 +18,19 @@ export class ScalesPage implements OnInit {
     speed: 400
   };
 
-  category: Category;
-  title = '';
-  scales = [];
-  constructor(private channelManager: ChannelManagerService) {
-    this.category = Category.scales;
+  category = Category.scales;
+  channelList: ChannelList;
+
+  constructor(public channelManager: ChannelManagerService) {
+    this.channelList = new ChannelList([
+        {id: 'xasd', lastUpdate: Math.trunc(Date.now() / 1000)},
+        {id: 'egas', lastUpdate: Math.trunc(Date.now() / 1000) + 180},
+        {id: 'ksae', lastUpdate: Math.trunc(Date.now() / 1000) + 60},
+        {id: 'zzzz', lastUpdate: Math.trunc(Date.now() / 1000) + 7886}
+      ],
+      [{title: 'Id Bilancia', mode: SortMode.none}, {title: 'Ultimo Aggiornamento', mode: SortMode.none}]
+    );
+    this.channelList.sortFilterChannels();
   }
 
   ngOnInit() {
@@ -29,7 +38,8 @@ export class ScalesPage implements OnInit {
   }
 
   getScales(){
-    this.scales = this.channelManager.getActors(this.category);
+    this.channelList.setChannels(this.channelManager.getActors(this.category));
+    this.channelList.sortFilterChannels();
   }
 
   async segmentChanged() {
@@ -41,8 +51,32 @@ export class ScalesPage implements OnInit {
   }
 
   loadContent(ev) {
-    this.getScales();
-    setTimeout(() => ev.target.complete(), 700);
+    if(this.segment === 0) {
+      this.getScales();
+      setTimeout(() => ev.target.complete(), 700);
+    }else{
+      setTimeout(() => ev.target.complete(), 2000);
+    }
+  }
+
+  sortModeToIcon(mode: SortMode): string{
+    switch (mode){
+      case SortMode.ascending:
+        return 'caret-up';
+      case SortMode.descending:
+        return 'caret-down';
+      case SortMode.none:
+        return 'remove';
+    }
+  }
+
+  toggleSort(index: number){
+    this.channelList.toggleSortMode(index);
+  }
+
+  filterChannels(ev: any) {
+    const val = ev.currentTarget.value;
+    this.channelList.filterChannels(val);
   }
 
 }

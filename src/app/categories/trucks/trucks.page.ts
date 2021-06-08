@@ -35,7 +35,7 @@ export class TrucksPage implements OnInit {
   }
 
   ngOnInit() {
-    //this.getTrucks();
+    this.getTrucks();
   }
 
   getTrucks(){

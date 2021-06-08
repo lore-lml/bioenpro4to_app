@@ -29,19 +29,23 @@
 
   <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
     <ion-slide>
-      <ion-list *ngIf="scales.length !== 0">
-        <ion-searchbar animated color="tertiary"></ion-searchbar>
+      <ion-list *ngIf="channelList.length !== 0">
+        <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
         <ion-item lines="full">
-          <ion-list-header>Id Bilancia</ion-list-header>
-          <ion-list-header>Ultimo aggiornamento</ion-list-header>
+          <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
+            <ion-button (click)="toggleSort(i)">
+              {{c.title}}
+              <ion-icon [name]="sortModeToIcon(c.mode)"></ion-icon>
+            </ion-button>
+          </ion-list-header>
         </ion-item>
-        <ion-item lines="full" button="true" *ngFor="let t of scales">
+        <ion-item lines="full" button="true" *ngFor="let t of channelList.channels">
           <ion-label>{{t.id}}</ion-label>
-          <ion-label class="timestamp">{{t.lastUpdate}}</ion-label>
+          <ion-label class="timestamp">{{channelManager.timestampToHoursDate(t.lastUpdate)}}</ion-label>
         </ion-item>
       </ion-list>
 
-      <ion-title *ngIf="scales.length === 0">Nessun canale presente</ion-title>
+      <ion-title *ngIf="channelList.length === 0">Nessun canale presente</ion-title>
     </ion-slide>
     <ion-slide>
       <img src="assets/categories/map2.png" alt="">

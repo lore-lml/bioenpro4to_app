@@ -40,3 +40,13 @@ ion-slides{
 ion-refresher{
   z-index: 100;
 }
+
+ion-icon{
+  padding: 3px;
+}
+
+ion-button{
+  --color: rgba(255,255,255,.5);
+  --padding-start: 0;
+  --padding-end: 0;
+}

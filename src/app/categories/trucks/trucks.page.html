@@ -30,7 +30,7 @@
   <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
     <ion-slide>
       <ion-list *ngIf="channelList.length !== 0">
-        <ion-searchbar animated color="tertiary"></ion-searchbar>
+        <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
         <ion-item lines="full">
           <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
             <ion-button (click)="toggleSort(i)">

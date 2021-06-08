@@ -31,7 +31,7 @@ export class TrucksPage implements OnInit {
     ],
       [{title: 'Targa', mode: SortMode.none}, {title: 'Ultimo Aggiornamento', mode: SortMode.none}]
     );
-    this.channelList.sortChannels();
+    this.channelList.sortFilterChannels();
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class TrucksPage implements OnInit {
 
   getTrucks(){
     this.channelList.setChannels(this.channelManager.getActors(this.category));
-    this.channelList.sortChannels();
+    this.channelList.sortFilterChannels();
   }
 
   async segmentChanged() {
@@ -73,5 +73,10 @@ export class TrucksPage implements OnInit {
 
   toggleSort(index: number){
     this.channelList.toggleSortMode(index);
+  }
+
+  filterChannels(ev: any) {
+    const val = ev.currentTarget.value;
+    this.channelList.filterChannels(val);
   }
 }

@@ -26,6 +26,17 @@ export class DailyChannel extends Channel{
     return `${day}/${month}/${year}`;
   }
 
+  get stringHourDate(): string{
+    const date = new Date(this.timestamp*1000);
+    const day = DailyChannel.zeroPad(date.getDate());
+    const month = DailyChannel.zeroPad(date.getMonth()+1);
+    const year = date.getFullYear();
+    const sDate =  `${day}/${month}/${year}`;
+    const hours = date.getHours();
+    const minutes = DailyChannel.zeroPad(date.getMinutes());
+    return `${hours}.${minutes} - ${sDate}`;
+  }
+
   private static zeroPad(value: number): string{
     return value >= 10 ? ''+value : '0'+value;
   }

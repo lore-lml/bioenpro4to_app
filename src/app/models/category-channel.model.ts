@@ -67,6 +67,10 @@ export class CategoryChannel extends Channel implements InfoReader{
     return res.slice(start, end);
   }
 
+  getActorsArray(): Array<any> {
+    return this.actorChannels.map(ch => ({id: ch.actorId, lastUpdate: ch.getLastUpdate()}));
+  }
+
   private async readNextLayer(): Promise<boolean>{
     let success = true;
     for (const ch of this.actorChannels){

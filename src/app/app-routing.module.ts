@@ -10,18 +10,22 @@ const routes: Routes = [
   {
     path: 'trucks',
     canActivate: [CategoryGuard],
-    loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+    loadChildren: () => import('./categories/trucks/trucks.module').then(m => m.TrucksPageModule)
   },
   {
     path: 'scales',
     canActivate: [CategoryGuard],
-    loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+    loadChildren: () => import('./categories/scales/scales.module').then(m => m.ScalesPageModule)
   },
   {
     path: 'biocells',
     canActivate: [CategoryGuard],
-    loadChildren: () => import('./category/category.module').then( m => m.CategoryPageModule)
+    loadChildren: () => import('./categories/biocells/biocells.module').then(m => m.BiocellsPageModule)
   },
+  {
+    path: '**',
+    redirectTo: 'tabs/tab1'
+  }
 ];
 @NgModule({
   imports: [

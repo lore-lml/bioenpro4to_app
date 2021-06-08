@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CategoryPageRoutingModule } from './category-routing.module';
+import { BiocellsPageRoutingModule } from './biocells-routing.module';
 
-import { CategoryPage } from './category.page';
+import { BiocellsPage } from './biocells.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CategoryPageRoutingModule
+    BiocellsPageRoutingModule
   ],
-  declarations: [CategoryPage]
+  declarations: [BiocellsPage]
 })
-export class CategoryPageModule {}
+export class BiocellsPageModule {}

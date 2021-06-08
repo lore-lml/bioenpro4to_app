@@ -3,6 +3,7 @@ import {ChannelInfo} from '../../../streams_lib/pkg';
 import {RootChannel} from '../models/root-channel.model';
 import {ConnectableObservable, Observable, ReplaySubject} from 'rxjs';
 import {multicast} from 'rxjs/operators';
+import {Category} from '../models/category-channel.model';
 
 export enum RootState{
   loading,
@@ -13,8 +14,8 @@ export enum RootState{
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = '';//'97a9ee591b8bd9f68eba0b74e55dc84b27b9766d35c4bf8ef24264c307111c640000000000000000';
-  readonly announceId = '';//'e5e26e9ae0069b63b181ed68';
+  readonly channelId = '97a9ee591b8bd9f68eba0b74e55dc84b27b9766d35c4bf8ef24264c307111c640000000000000000';
+  readonly announceId = 'e5e26e9ae0069b63b181ed68';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateObservable: any;
@@ -45,5 +46,9 @@ export class ChannelManagerService {
 
   get isRootLoading(){
     return this.rootState === RootState.loading;
+  }
+
+  getActors(category: Category): Array<any>{
+    return this.rootChannel.getActorsArray(category);
   }
 }

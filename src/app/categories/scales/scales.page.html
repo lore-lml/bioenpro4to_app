@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pesate</ion-title>
+  </ion-toolbar>
+
+  <ion-segment color="success" mode="md" [(ngModel)]="segment" (ionChange)="segmentChanged()">
+    <ion-segment-button value="0" layout="icon-start">
+      <ion-label>Canali</ion-label>
+      <ion-icon name="link"></ion-icon>
+    </ion-segment-button>
+    <ion-segment-button value="1" layout="icon-start">
+      <ion-label>Impianto</ion-label>
+      <ion-icon name="business"></ion-icon>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down"
+      refreshingSpinner="dots"
+      pullingText="Aggiorna lista ...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
+    <ion-slide>
+      <ion-list *ngIf="scales.length !== 0">
+        <ion-searchbar animated color="tertiary"></ion-searchbar>
+        <ion-item lines="full">
+          <ion-list-header>Id Bilancia</ion-list-header>
+          <ion-list-header>Ultimo aggiornamento</ion-list-header>
+        </ion-item>
+        <ion-item lines="full" button="true" *ngFor="let t of scales">
+          <ion-label>{{t.id}}</ion-label>
+          <ion-label class="timestamp">{{t.lastUpdate}}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <ion-title *ngIf="scales.length === 0">Nessun canale presente</ion-title>
+    </ion-slide>
+    <ion-slide>
+      <img src="assets/categories/map2.png" alt="">
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>

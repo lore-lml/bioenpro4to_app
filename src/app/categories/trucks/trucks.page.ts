@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {IonSlides} from '@ionic/angular';
 import {Category} from '../../models/category-channel.model';
 import {ChannelManagerService} from '../../services/channel-manager.service';
+import {ChannelList, SortMode} from '../channel-list.model';
 
 @Component({
   selector: 'app-trucks',
@@ -18,18 +19,28 @@ export class TrucksPage implements OnInit {
     speed: 400
   };
 
-  category: Category;
-  trucks = [];
-  constructor(private channelManager: ChannelManagerService) {
-    this.category = Category.trucks;
+  category = Category.trucks;
+  channelList: ChannelList;
+
+  constructor(public channelManager: ChannelManagerService) {
+    this.channelList = new ChannelList([
+      {id: 'xasd', lastUpdate: Math.trunc(Date.now() / 1000)},
+      {id: 'egas', lastUpdate: Math.trunc(Date.now() / 1000) + 180},
+      {id: 'ksae', lastUpdate: Math.trunc(Date.now() / 1000) + 60},
+      {id: 'zzzz', lastUpdate: Math.trunc(Date.now() / 1000) + 7886}
+    ],
+      [{title: 'Targa', mode: SortMode.none}, {title: 'Ultimo Aggiornamento', mode: SortMode.none}]
+    );
+    this.channelList.sortChannels();
   }
 
   ngOnInit() {
-    this.getTrucks();
+    //this.getTrucks();
   }
 
   getTrucks(){
-    this.trucks = this.channelManager.getActors(this.category);
+    this.channelList.setChannels(this.channelManager.getActors(this.category));
+    this.channelList.sortChannels();
   }
 
   async segmentChanged() {
@@ -47,5 +58,20 @@ export class TrucksPage implements OnInit {
     }else{
       setTimeout(() => ev.target.complete(), 2000);
     }
+  }
+
+  sortModeToIcon(mode: SortMode): string{
+    switch (mode){
+      case SortMode.ascending:
+        return 'caret-up';
+      case SortMode.descending:
+        return 'caret-down';
+      case SortMode.none:
+        return 'remove';
+    }
+  }
+
+  toggleSort(index: number){
+    this.channelList.toggleSortMode(index);
   }
 }

@@ -65,9 +65,9 @@ export class ActorChannel extends Channel implements InfoReader{
     return res.slice(start, end);
   }
 
-  getLastUpdate(): string {
+  getLastUpdate(): number {
     if (this.dailyChannels.length === 0){
-      return '';
+      return 0;
     }
     return this.dailyChannels.reduce((previousValue, currentValue) => {
       if (previousValue.timestamp > currentValue.timestamp){
@@ -75,7 +75,7 @@ export class ActorChannel extends Channel implements InfoReader{
       }
       return currentValue;
     })
-      .stringHourDate;
+      .timestamp;
   }
 
   private async readNextLayer(): Promise<boolean>{

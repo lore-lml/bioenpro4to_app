@@ -20,10 +20,11 @@ export class ChannelList{
 
   sortFilterChannels(){
     const col = this.sortColumn[this.selectedColumn];
-    const compareTo = this.selectedColumn === 0 ? (a, b) => a.id.localeCompare(b.id) : (a, b) => a.lastUpdate - b.lastUpdate;
+    const compareTo = this.selectedColumn === 0 ?
+      (a, b) => a.id.toLowerCase().localeCompare(b.id.toLowerCase()) : (a, b) => a.lastUpdate - b.lastUpdate;
 
     this.filtered = this.filterVal.length === 0 ?
-      [...this.original] : this.original.filter(v => v.id.search(this.filterVal) !== -1);
+      [...this.original] : this.original.filter(v => v.id.toLowerCase().search(this.filterVal) !== -1);
     switch (col.mode){
       case SortMode.ascending:
         this.filtered.sort((a, b) => compareTo(a, b));
@@ -68,7 +69,11 @@ export class ChannelList{
   }
 
   filterChannels(val: string) {
-    this.filterVal = val.trim();
+    this.filterVal = val.trim().toLowerCase();
     this.sortFilterChannels();
+  }
+
+  get isEmpty(): boolean{
+    return this.original.length === 0;
   }
 }

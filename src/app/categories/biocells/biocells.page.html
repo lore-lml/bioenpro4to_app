@@ -29,7 +29,7 @@
 
   <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
     <ion-slide>
-      <ion-list *ngIf="channelList.length !== 0">
+      <ion-list *ngIf="!channelList.isEmpty">
         <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
         <ion-item lines="full">
           <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
@@ -45,7 +45,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-title *ngIf="channelList.length === 0">Nessun canale presente</ion-title>
+      <ion-title *ngIf="channelList.isEmpty">Nessun canale presente</ion-title>
     </ion-slide>
     <ion-slide>
       <img src="assets/categories/map2.png" alt="">

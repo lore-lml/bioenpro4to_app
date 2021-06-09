@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
+  <ion-refresher slot="fixed" pullMin="100" pullMax="200" (ionRefresh)="loadContent($event)">
     <ion-refresher-content
       pullingIcon="arrow-down"
       refreshingSpinner="dots"

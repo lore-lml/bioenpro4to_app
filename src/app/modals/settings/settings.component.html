@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      {{title}}
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section>
+    <ion-title>Tangle</ion-title>
+    <ion-list class="ion-no-padding">
+      <ion-item lines="full">
+        <ion-icon name="globe-outline"></ion-icon>
+        <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
+          <ion-text>Network</ion-text>
+          <p>Scegli se collegarti alla rete di development o di production</p>
+        </ion-label>
+        <ion-select interface="action-sheet" cancelText="Chiudi" value="testnet">
+          <ion-select-option value="testnet">Testnet</ion-select-option>
+          <ion-select-option value="mainnet">Mainnet</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="full" button="true" (click)="showRootChannelInput()">
+        <ion-icon name="code-working-outline"></ion-icon>
+        <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
+          <ion-text>Root Channel</ion-text>
+          <p>Cambia l'indirizzo del canale radice</p>
+        </ion-label>
+        <ion-icon name="caret-down"></ion-icon>
+      </ion-item>
+
+    </ion-list>
+  </section>
+
+</ion-content>

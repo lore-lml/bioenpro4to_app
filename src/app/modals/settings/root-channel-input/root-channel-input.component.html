@@ -1,0 +1,16 @@
+<section>
+  <ion-title>Indirizzo Root Channel</ion-title>
+  <ion-item color="primary">
+    <ion-input inputmode="text" mode="md" placeholder="channel:announce" [(ngModel)]="inputValue"></ion-input>
+  </ion-item>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button shape="round" expand="full" color="success" (click)="confirmValue()">Ok</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button shape="round" expand="full" color="danger" (click)="dismissPopover()">Annulla</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</section>

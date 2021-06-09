@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-alerts',
@@ -7,8 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlertsComponent implements OnInit {
 
-  constructor() { }
+  title = 'Avvisi';
 
-  ngOnInit() {}
+  constructor(private modalController: ModalController) {}
 
+  ngOnInit() {
+  }
+
+  async closeModal() {
+    await this.modalController.dismiss({
+      dismissed: true
+    });
+  }
+
+  loadContent(ev) {
+    setTimeout(() => ev.target.complete(), 2000);
+  }
 }

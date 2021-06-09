@@ -4,7 +4,7 @@
       {{title}}
     </ion-title>
     <ion-buttons slot="primary">
-      <ion-button>
+      <ion-button (click)="showAlerts()">
         <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -30,7 +30,7 @@
     <ion-item *ngFor="let f of feed" button="true">
       <img [src]="getFeedImg(f)" alt="">
       <ion-label>{{f.actorId}}</ion-label>
-      <ion-text>{{f.hourDate}}</ion-text>
+      <ion-text>{{f.timeAgo}}</ion-text>
     </ion-item>
     <section class="no-feed" *ngIf="feed.length === 0">
       <ion-title>Nessun aggiornamento</ion-title>

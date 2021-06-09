@@ -16,10 +16,18 @@ ion-content{
     ion-item{
       --background: #00000000;
       --border-color: rgba(255,255,255, .2);
-      ion-icon{
-        padding-right: 16px;
+      ion-label{
+        h2{
+          font-size: 1.1em;
+        }
+      }
+      ion-icon {
+        color: rgba(255, 255, 255, .5);
+      }
+      ion-icon.single-arrow{
+        color: rgba(255, 255, 255, .25);
+        font-size: .9em;
       }
     }
   }
-
 }

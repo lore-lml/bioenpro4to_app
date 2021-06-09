@@ -14,11 +14,13 @@
 <ion-content>
   <section>
     <ion-title>Tangle</ion-title>
-    <ion-list class="ion-no-padding">
-      <ion-item lines="inset">
-        <ion-icon name="globe-outline"></ion-icon>
-        <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
-          <ion-text>Network</ion-text>
+    <ion-list>
+      <ion-item lines="full">
+        <ion-avatar>
+          <ion-icon name="git-network-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label class="ion-text-wrap ion-text-justify ion-padding-horizontal">
+          <h2>Network</h2>
           <p>Scegli se collegarti alla rete di development o di production</p>
         </ion-label>
         <ion-select interface="action-sheet" cancelText="Chiudi" value="testnet">
@@ -27,16 +29,16 @@
         </ion-select>
       </ion-item>
 
-      <ion-item lines="inset" button="true" (click)="showRootChannelInput()">
-        <ion-icon name="code-working-outline"></ion-icon>
-        <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
-          <ion-text>Root Channel</ion-text>
+      <ion-item lines="full" button (click)="showRootChannelInput()">
+        <ion-avatar>
+          <ion-icon name="code-working-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label class="ion-text-wrap ion-text-justify ion-padding-horizontal">
+          <h2>Root Channel</h2>
           <p>Cambia l'indirizzo del canale radice</p>
         </ion-label>
-        <ion-icon name="caret-down"></ion-icon>
+        <ion-icon class="single-arrow" name="caret-down"></ion-icon>
       </ion-item>
-
     </ion-list>
   </section>
-
 </ion-content>

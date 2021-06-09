@@ -3,6 +3,8 @@ import {ChannelManagerService, RootState} from '../services/channel-manager.serv
 import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
 import {Category} from '../models/category-channel.model';
+import {ModalController} from '@ionic/angular';
+import {AlertsComponent} from '../modals/alerts/alerts.component';
 
 @Component({
   selector: 'app-tab1',
@@ -33,7 +35,7 @@ export class Tab1Page implements OnInit{
   root: RootChannel;
   feed: Feed[];
 
-  constructor(private channelManager: ChannelManagerService) {
+  constructor(private channelManager: ChannelManagerService, private modalController: ModalController) {
     this.feed = [];
   }
 
@@ -59,5 +61,13 @@ export class Tab1Page implements OnInit{
       case Category.biocells:
         return 'assets/categories/biocells.svg';
     }
+  }
+
+  async showAlerts() {
+    const modal = await this.modalController.create({
+      component: AlertsComponent,
+      cssClass: 'alerts'
+    });
+    await modal.present();
   }
 }

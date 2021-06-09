@@ -26,4 +26,21 @@ export class Feed {
   private static zeroPad(value: number): string{
     return value >= 10 ? ''+value : '0'+value;
   }
+
+  get timeAgo(): string{
+    const now: number = Math.trunc(Date.now() / 1000);
+    const diff = now - this.timestamp;
+    if (diff > 3600 * 24){
+      const time = Math.trunc(diff / (3600 * 24) + 1 );
+      return `${time} giorni fa`;
+    }else if (diff > 3600){
+      const time = Math.trunc(diff / 3600 + 1);
+      return `${time} ore fa`;
+    }else if (diff > 60){
+      const time = Math.trunc(diff / 60 + 1);
+      return `${time} minuti fa`;
+    }else{
+      return `Pochi secondi fa`;
+    }
+  }
 }

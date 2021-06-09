@@ -32,6 +32,9 @@
       <ion-label>{{f.actorId}}</ion-label>
       <ion-text>{{f.hourDate}}</ion-text>
     </ion-item>
+    <section class="no-feed" *ngIf="feed.length === 0">
+      <ion-title>Nessun aggiornamento</ion-title>
+    </section>
   </ion-list>
 
   <ng-template id="skeleton" #skeleton>

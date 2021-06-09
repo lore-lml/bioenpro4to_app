@@ -3,9 +3,9 @@
     <ion-title>
       {{title}}
     </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="closeModal()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
+    <ion-buttons slot="start" (click)="closeModal()">
+      <ion-button>
+        <ion-icon name="arrow-back-sharp"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -15,7 +15,7 @@
   <section>
     <ion-title>Tangle</ion-title>
     <ion-list class="ion-no-padding">
-      <ion-item lines="full">
+      <ion-item lines="inset">
         <ion-icon name="globe-outline"></ion-icon>
         <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
           <ion-text>Network</ion-text>
@@ -27,7 +27,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item lines="full" button="true" (click)="showRootChannelInput()">
+      <ion-item lines="inset" button="true" (click)="showRootChannelInput()">
         <ion-icon name="code-working-outline"></ion-icon>
         <ion-label class="ion-text-wrap ion-text-justify ion-padding-end">
           <ion-text>Root Channel</ion-text>

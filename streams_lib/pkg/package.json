@@ -15,7 +15,9 @@
   "files": [
     "iota_streams_wasm_bg.wasm",
     "iota_streams_wasm.js",
-    "iota_streams_wasm.d.ts"
+    "iota_streams_wasm.d.ts",
+    "LICENSE_APACHE",
+    "LICENSE_MIT"
   ],
   "module": "iota_streams_wasm.js",
   "homepage": "https://www.iota.org",

@@ -2,6 +2,9 @@
 /* eslint-disable */
 /**
 */
+export function greet(): void;
+/**
+*/
 export class ChannelInfo {
   free(): void;
 /**
@@ -22,6 +25,10 @@ export class ChannelInfo {
 */
 export class ChannelReader {
   free(): void;
+/**
+* @returns {ChannelReaderBuilder}
+*/
+  static builder(): ChannelReaderBuilder;
 /**
 * @returns {ChannelReader}
 */
@@ -61,6 +68,18 @@ export class ChannelReader {
 * @returns {string}
 */
   msg_index(msg_id: string): string;
+/**
+* @param {string} psw
+* @returns {EncryptedState}
+*/
+  export_to_bytes(psw: string): EncryptedState;
+/**
+* @param {EncryptedState} state
+* @param {string} psw
+* @param {string | undefined} node_url
+* @returns {ChannelReader}
+*/
+  static import_from_bytes(state: EncryptedState, psw: string, node_url?: string): ChannelReader;
 }
 /**
 */
@@ -80,11 +99,6 @@ export class ChannelReaderBuilder {
 */
   node(node_url: string): ChannelReaderBuilder;
 /**
-* @param {string} encoding
-* @returns {ChannelReaderBuilder}
-*/
-  encoding(encoding: string): ChannelReaderBuilder;
-/**
 * @param {string} channel_id
 * @param {string} announce_id
 * @returns {ChannelReader}
@@ -93,59 +107,8 @@ export class ChannelReaderBuilder {
 }
 /**
 */
-export class ChannelWriter {
+export class EncryptedState {
   free(): void;
-/**
-* @returns {ChannelWriter}
-*/
-  clone(): ChannelWriter;
-/**
-* @returns {any}
-*/
-  open(): any;
-/**
-* @param {Uint8Array} p_data
-* @param {Uint8Array} m_data
-* @param {KeyNonce | undefined} key_nonce
-* @returns {any}
-*/
-  send_signed_raw_data(p_data: Uint8Array, m_data: Uint8Array, key_nonce?: KeyNonce): any;
-/**
-* @returns {ChannelInfo}
-*/
-  channel_address(): ChannelInfo;
-/**
-* @param {string} msg_id
-* @returns {string}
-*/
-  msg_index(msg_id: string): string;
-}
-/**
-*/
-export class ChannelWriterBuilder {
-  free(): void;
-/**
-*/
-  constructor();
-/**
-* @param {string} seed
-* @returns {ChannelWriterBuilder}
-*/
-  seed(seed: string): ChannelWriterBuilder;
-/**
-* @param {string} node_url
-* @returns {ChannelWriterBuilder}
-*/
-  node(node_url: string): ChannelWriterBuilder;
-/**
-* @param {string} encoding
-* @returns {ChannelWriterBuilder}
-*/
-  encoding(encoding: string): ChannelWriterBuilder;
-/**
-* @returns {ChannelWriter}
-*/
-  build(): ChannelWriter;
 }
 /**
 */

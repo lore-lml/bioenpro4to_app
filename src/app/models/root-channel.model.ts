@@ -76,6 +76,13 @@ export class RootChannel extends Channel implements InfoReader{
     return this.categoryChannels[category].getActorsArray();
   }
 
+  getDailyChannels(actorId: string, category: Category): Array<any> {
+    if (this.categoryChannels.length === 0){
+      return [];
+    }
+    return this.categoryChannels[category].getDailyChannels(actorId);
+  }
+
   private async readNextLayer(): Promise<boolean>{
     let success = true;
     for (const ch of this.categoryChannels){

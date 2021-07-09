@@ -21,10 +21,10 @@ export class ChannelList{
   sortFilterChannels(){
     const col = this.sortColumn[this.selectedColumn];
     const compareTo = this.selectedColumn === 0 ?
-      (a, b) => a.id.toLowerCase().localeCompare(b.id.toLowerCase()) : (a, b) => a.lastUpdate - b.lastUpdate;
+      (a, b) => a.col1.toLowerCase().localeCompare(b.col1.toLowerCase()) : (a, b) => a.col2 - b.col2;
 
     this.filtered = this.filterVal.length === 0 ?
-      [...this.original] : this.original.filter(v => v.id.toLowerCase().search(this.filterVal) !== -1);
+      [...this.original] : this.original.filter(v => v.col1.toLowerCase().search(this.filterVal) !== -1);
     switch (col.mode){
       case SortMode.ascending:
         this.filtered.sort((a, b) => compareTo(a, b));

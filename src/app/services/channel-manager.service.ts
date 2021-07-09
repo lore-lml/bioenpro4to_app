@@ -14,8 +14,8 @@ export enum RootState{
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = '0c49909d042373997c04fad0a0bd8a89083f0a811ef51f8326c9d3454ac127aa0000000000000000';
-  readonly announceId = '56efdae80eaff27980e4f724';
+  readonly channelId = '5c3108becae8637f6198f9f7c6dae5e96179678208171a1b77e85f3caf84ab250000000000000000';
+  readonly announceId = '922baa87a8d364bda7799233';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateObservable: any;
@@ -54,6 +54,10 @@ export class ChannelManagerService {
 
   getActors(category: Category): Array<any>{
     return this.rootChannel.getActorsArray(category);
+  }
+
+  getDailyChannels(actorId: string, category: Category): Array<any>{
+    return this.rootChannel.getDailyChannels(actorId, category);
   }
 
   timestampToHoursDate(timestamp: number){

@@ -78,6 +78,10 @@ export class ActorChannel extends Channel implements InfoReader{
       .timestamp;
   }
 
+  getDailyChannels(): Array<any>{
+    return this.dailyChannels.map(ch => ({col1: ch.stringDate, col2: ch.numberOfMessages}));
+  }
+
   private async readNextLayer(): Promise<boolean>{
     let success = true;
     for (const ch of this.dailyChannels){

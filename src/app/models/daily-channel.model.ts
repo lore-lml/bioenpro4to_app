@@ -77,4 +77,8 @@ export class DailyChannel extends Channel{
       return false;
     }
   }
+
+  get numberOfMessages() {
+    return this.msgs.length;
+  }
 }

@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: BiocellsPage
-  }
+  },
+  {
+    path: ':id',
+    loadChildren: () => import('./biocell-channels/biocell-channels.module').then(m => m.BiocellChannelsPageModule)
+  },
 ];
 
 @NgModule({

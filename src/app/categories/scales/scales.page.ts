@@ -23,10 +23,10 @@ export class ScalesPage implements OnInit {
 
   constructor(public channelManager: ChannelManagerService) {
     this.channelList = new ChannelList([
-        {id: 'xasd', lastUpdate: Math.trunc(Date.now() / 1000)},
-        {id: 'egas', lastUpdate: Math.trunc(Date.now() / 1000) + 180},
-        {id: 'ksae', lastUpdate: Math.trunc(Date.now() / 1000) + 60},
-        {id: 'zzzz', lastUpdate: Math.trunc(Date.now() / 1000) + 7886}
+        {col1: 'xasd', col2: Math.trunc(Date.now() / 1000)},
+        {col1: 'egas', col2: Math.trunc(Date.now() / 1000) + 180},
+        {col1: 'ksae', col2: Math.trunc(Date.now() / 1000) + 60},
+        {col1: 'zzzz', col2: Math.trunc(Date.now() / 1000) + 7886}
       ],
       [{title: 'Id Bilancia', mode: SortMode.none}, {title: 'Ultimo Aggiornamento', mode: SortMode.none}]
     );

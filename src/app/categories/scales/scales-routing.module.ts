@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: ScalesPage
-  }
+  },
+  {
+    path: ':id',
+    loadChildren: () => import('./scale-channels/scale-channels.module').then(m => m.ScaleChannelsPageModule)
+  },
 ];
 
 @NgModule({

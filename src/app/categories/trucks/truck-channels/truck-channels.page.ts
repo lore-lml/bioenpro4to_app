@@ -60,4 +60,9 @@ export class TruckChannelsPage implements OnInit {
     const val = ev.currentTarget.value;
     this.channelList.filterChannels(val);
   }
+
+  toMessagePage(date: string): string{
+    const d = date.replace(/\//g, '');
+    return `messages/${d}`;
+  }
 }

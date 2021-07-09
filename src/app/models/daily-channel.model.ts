@@ -81,4 +81,8 @@ export class DailyChannel extends Channel{
   get numberOfMessages() {
     return this.msgs.length;
   }
+
+  get packets(): Packet[]{
+    return this.msgs;
+  }
 }

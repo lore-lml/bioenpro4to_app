@@ -73,7 +73,18 @@ export class CategoryChannel extends Channel implements InfoReader{
 
   getDailyChannels(actorId: string): Array<any>{
     const actor = this.actorChannels.find(a => a.actorId.toLowerCase() === actorId.toLowerCase());
+    if (actor === undefined){
+      return [];
+    }
     return actor.getDailyChannels();
+  }
+
+  getPacketsOf(actorId: string, date: string): Packet[]{
+    const actor = this.actorChannels.find(a => a.actorId.toLowerCase() === actorId.toLowerCase());
+    if (actor === undefined){
+      return [];
+    }
+    return actor.getPacketsOf(date);
   }
 
   private async readNextLayer(): Promise<boolean>{

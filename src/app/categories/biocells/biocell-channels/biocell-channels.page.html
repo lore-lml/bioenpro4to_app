@@ -26,7 +26,7 @@
         </ion-button>
       </ion-list-header>
     </ion-item>
-    <ion-item lines="full" button="true" *ngFor="let t of channelList.channels">
+    <ion-item lines="full" button="true" *ngFor="let t of channelList.channels" [routerLink]="toMessagePage(t.col1)">
       <ion-label>{{t.col1}}</ion-label>
       <ion-label class="timestamp">{{t.col2}}</ion-label>
     </ion-item>

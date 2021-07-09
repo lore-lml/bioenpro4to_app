@@ -44,8 +44,7 @@
           <ion-label class="timestamp">{{channelManager.timestampToHoursDate(t.col2)}}</ion-label>
         </ion-item>
       </ion-list>
-
-
+      <ion-title *ngIf="channelList.isEmpty">Nessun canale presente</ion-title>
     </ion-slide>
     <ion-slide>
       <img src="assets/categories/map2.png" alt="">

@@ -4,6 +4,7 @@ import {RootChannel} from '../models/root-channel.model';
 import {ConnectableObservable, Observable, ReplaySubject} from 'rxjs';
 import {multicast} from 'rxjs/operators';
 import {Category} from '../models/category-channel.model';
+import {Packet} from '../models/packet.model';
 
 export enum RootState{
   loading,
@@ -14,8 +15,8 @@ export enum RootState{
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = '5c3108becae8637f6198f9f7c6dae5e96179678208171a1b77e85f3caf84ab250000000000000000';
-  readonly announceId = '922baa87a8d364bda7799233';
+  readonly channelId = '952100d0e404eebfcf48c75bad3f4828dedabf68f939abc5e61f7b065664f4960000000000000000';
+  readonly announceId = '96ec81ca1324ad9c54076bf1';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateObservable: any;
@@ -58,6 +59,10 @@ export class ChannelManagerService {
 
   getDailyChannels(actorId: string, category: Category): Array<any>{
     return this.rootChannel.getDailyChannels(actorId, category);
+  }
+
+  getPacketsOf(actorId: string, date: string, category: Category): Packet[]{
+    return this.rootChannel.getPacketsOf(actorId, date, category);
   }
 
   timestampToHoursDate(timestamp: number){

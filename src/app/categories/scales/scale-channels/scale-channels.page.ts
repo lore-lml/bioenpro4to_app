@@ -61,4 +61,9 @@ export class ScaleChannelsPage implements OnInit {
     this.channelList.filterChannels(val);
   }
 
+  toMessagePage(date: string): string{
+    const d = date.replace(/\//g, '');
+    return `messages/${d}`;
+  }
+
 }

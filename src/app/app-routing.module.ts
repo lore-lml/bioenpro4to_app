@@ -25,7 +25,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'tabs/tab1'
+  },  {
+    path: 'generic-message',
+    loadChildren: () => import('./messages/generic-message/generic-message.module').then( m => m.GenericMessagePageModule)
   }
+
 ];
 @NgModule({
   imports: [

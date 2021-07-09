@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{actorId.toUpperCase()}} - Channel {{date}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+
+    <div *ngFor="let p of packets; let i = index">
+      <ion-item button="true" (click)="toggleShow(i)">
+        <ion-avatar slot="start">
+          <ion-icon name="mail-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h2>Messaggio {{i+1}}</h2>
+          <h3>{{channelManager.timestampToHoursDate(p.timestamp)}}</h3>
+        </ion-label>
+        <ion-avatar slot="end">
+          <ion-icon [name]="dataShowed[i] ? 'chevron-up-outline':'chevron-down-outline'" size="large"></ion-icon>
+        </ion-avatar>
+      </ion-item>
+      <ion-card *ngIf="dataShowed[i]">
+        <ion-card-content>
+          <pre>{{p.pPayload}}</pre>
+          <pre>{{p.mPayload}}</pre>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+  </ion-list>
+</ion-content>

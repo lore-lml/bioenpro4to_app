@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import {ChannelList, SortMode} from '../categories/channel-list.model';
+import {Category} from '../models/category-channel.model';
 import {ActivatedRoute} from '@angular/router';
-import {ChannelList, SortMode} from '../../channel-list.model';
-import {ChannelManagerService} from '../../../services/channel-manager.service';
-import {Category} from '../../../models/category-channel.model';
+import {ChannelManagerService} from '../services/channel-manager.service';
 
 @Component({
-  selector: 'app-truck-channels',
-  templateUrl: './truck-channels.page.html',
-  styleUrls: ['./truck-channels.page.scss'],
+  selector: 'app-daily-channels',
+  templateUrl: './daily-channels.page.html',
+  styleUrls: ['./daily-channels.page.scss'],
 })
-export class TruckChannelsPage implements OnInit {
+export class DailyChannelsPage implements OnInit {
 
   id = '';
   channelList: ChannelList;
-  category = Category.trucks;
+  category: Category;
 
   constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService) {
     this.channelList = new ChannelList([
@@ -29,6 +29,18 @@ export class TruckChannelsPage implements OnInit {
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
+    switch (category){
+      case 'trucks':
+        this.category = Category.trucks;
+        break;
+      case 'scales':
+        this.category = Category.scales;
+        break;
+      case 'biocells':
+        this.category = Category.biocells;
+        break;
+    }
     this.getMessages();
   }
 
@@ -38,7 +50,7 @@ export class TruckChannelsPage implements OnInit {
   }
 
   loadContent(ev) {
-      setTimeout(() => ev.target.complete(), 2000);
+    setTimeout(() => ev.target.complete(), 2000);
   }
 
   sortModeToIcon(mode: SortMode): string{
@@ -65,4 +77,5 @@ export class TruckChannelsPage implements OnInit {
     const d = date.replace(/\//g, '');
     return `messages/${d}`;
   }
+
 }

@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ScaleChannelsPageRoutingModule } from './scale-channels-routing.module';
+import { DailyChannelsPageRoutingModule } from './daily-channels-routing.module';
 
-import { ScaleChannelsPage } from './scale-channels.page';
+import { DailyChannelsPage } from './daily-channels.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ScaleChannelsPageRoutingModule
+    DailyChannelsPageRoutingModule
   ],
-  declarations: [ScaleChannelsPage]
+  declarations: [DailyChannelsPage]
 })
-export class ScaleChannelsPageModule {}
+export class DailyChannelsPageModule {}

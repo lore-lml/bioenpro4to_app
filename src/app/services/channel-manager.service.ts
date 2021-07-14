@@ -15,8 +15,8 @@ export enum RootState{
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = 'af0c526dae9e6747c2e24f4987cbd00d8d416daee6f07d9f4af552d8e9efc6ee0000000000000000';
-  readonly announceId = 'a694375fdba603c272f943d6';
+  readonly channelId = '1aa1644d13b9a4054c830535c367356135507ad598364398e49fff6101ed08150000000000000000';
+  readonly announceId = '9b66459ef867893aa24df384';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateObservable: any;

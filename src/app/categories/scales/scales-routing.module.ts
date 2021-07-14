@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    loadChildren: () => import('./scale-channels/scale-channels.module').then(m => m.ScaleChannelsPageModule)
+    loadChildren: () => import('../../daily-channels/daily-channels.module').then(m => m.DailyChannelsPageModule)
   },
 ];
 

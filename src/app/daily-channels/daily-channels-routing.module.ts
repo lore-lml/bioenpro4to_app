@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { TruckChannelsPage } from './truck-channels.page';
-import {GenericMessagePage} from '../../../messages/generic-message/generic-message.page';
+import { DailyChannelsPage } from './daily-channels.page';
+import {GenericMessagePage} from './generic-message/generic-message.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: TruckChannelsPage
+    component: DailyChannelsPage
   },
   {
     path: 'messages/:date',
@@ -19,4 +19,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TruckChannelsPageRoutingModule {}
+export class DailyChannelsPageRoutingModule {}

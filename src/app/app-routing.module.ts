@@ -25,10 +25,15 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'tabs/tab1'
-  },  {
+  },
+  {
     path: 'generic-message',
-    loadChildren: () => import('./messages/generic-message/generic-message.module').then( m => m.GenericMessagePageModule)
+    loadChildren: () => import('./daily-channels/generic-message/generic-message.module').then(m => m.GenericMessagePageModule)
+  },  {
+    path: 'daily-channels',
+    loadChildren: () => import('./daily-channels/daily-channels.module').then( m => m.DailyChannelsPageModule)
   }
+
 
 ];
 @NgModule({

@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    loadChildren: () => import('./biocell-channels/biocell-channels.module').then(m => m.BiocellChannelsPageModule)
+    loadChildren: () => import('../../daily-channels/daily-channels.module').then(m => m.DailyChannelsPageModule)
   },
 ];
 

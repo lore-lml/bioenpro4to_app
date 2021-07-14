@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    loadChildren: () => import('./truck-channels/truck-channels.module').then(m => m.TruckChannelsPageModule)
+    loadChildren: () => import('../../daily-channels/daily-channels.module').then(m => m.DailyChannelsPageModule)
   },
 ];
 

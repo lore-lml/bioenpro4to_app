@@ -37,7 +37,6 @@ export class GenericMessagePage implements OnInit {
     }
 
     this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);
-    console.log(this.packets);
     this.dataShowed = this.packets.map(() => false);
   }
 

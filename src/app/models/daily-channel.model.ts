@@ -54,7 +54,7 @@ export class DailyChannel extends Channel{
       end = len;
     }
 
-    return this.msgs.map(m => new Feed(this.category, this.actorId, m.timestamp))
+    return this.msgs.map(m => new Feed(this.category, this.actorId, this.stringDate, m.timestamp))
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(start, end);
   }

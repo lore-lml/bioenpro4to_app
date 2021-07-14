@@ -3,11 +3,13 @@ import {Category} from './category-channel.model';
 export class Feed {
   category: Category;
   actorId: string;
+  creationDate: string;
   timestamp: number;
 
-  constructor(category: Category, actorId: string, timestamp: number) {
+  constructor(category: Category, actorId: string, creationDate: string, timestamp: number) {
     this.category = category;
     this.actorId = actorId;
+    this.creationDate = creationDate;
     this.timestamp = timestamp;
   }
 

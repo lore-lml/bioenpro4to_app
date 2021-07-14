@@ -62,4 +62,21 @@ export class Tab1Page implements OnInit{
     });
     await modal.present();
   }
+
+  toPage(f: Feed): string{
+    let cat;
+    switch (f.category) {
+      case Category.trucks:
+        cat = 'trucks';
+        break;
+      case Category.scales:
+        cat = 'scales';
+        break;
+      case Category.biocells:
+        cat = 'biocells';
+        break;
+    }
+    const date = f.creationDate.replace(/\//g, '');
+    return `/${cat}/${f.actorId}/messages/${date}`;
+  }
 }

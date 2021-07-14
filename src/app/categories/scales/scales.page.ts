@@ -50,10 +50,11 @@ export class ScalesPage implements OnInit {
     this.segment = await this.slides.getActiveIndex();
   }
 
-  loadContent(ev) {
+  async loadContent(ev) {
     if(this.segment === 0) {
+      await this.channelManager.updateAll();
       this.getScales();
-      setTimeout(() => ev.target.complete(), 700);
+      ev.target.complete();
     }else{
       setTimeout(() => ev.target.complete(), 2000);
     }

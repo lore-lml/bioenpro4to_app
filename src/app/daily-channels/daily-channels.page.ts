@@ -49,8 +49,10 @@ export class DailyChannelsPage implements OnInit {
     this.channelList.sortFilterChannels();
   }
 
-  loadContent(ev) {
-    setTimeout(() => ev.target.complete(), 2000);
+  async loadContent(ev) {
+    await this.channelManager.updateAll();
+    this.getMessages();
+    ev.target.complete();
   }
 
   sortModeToIcon(mode: SortMode): string{

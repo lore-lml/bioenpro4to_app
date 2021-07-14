@@ -9,6 +9,7 @@ export class DailyChannel extends Channel{
   actorId: string;
   timestamp: number;
   msgs: Packet[];
+  opened: boolean;
 
   constructor(info: ChannelInfo, mainnet: boolean, category: Category, actorId: string, timestamp: number) {
     super(info, mainnet);
@@ -16,6 +17,7 @@ export class DailyChannel extends Channel{
     this.actorId = actorId;
     this.timestamp = timestamp;
     this.msgs = [];
+    this.opened = false;
   }
 
   get stringDate(): string{
@@ -58,9 +60,12 @@ export class DailyChannel extends Channel{
   }
 
   async readMsgs(): Promise<boolean> {
-    const res = await this.attach();
-    if (!res){
-      return false;
+    if (!this.opened){
+      const res = await this.attach();
+      if (!res){
+        return false;
+      }
+      this.opened = true;
     }
 
     await this.reader.clone().fetch_raw_msgs();

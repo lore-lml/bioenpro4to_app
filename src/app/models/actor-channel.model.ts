@@ -9,18 +9,23 @@ export class ActorChannel extends Channel implements InfoReader{
   category: Category;
   actorId: string;
   dailyChannels: DailyChannel[];
+  opened: boolean;
 
   constructor(info: ChannelInfo, mainnet: boolean, category: Category, actorId: string) {
     super(info, mainnet);
     this.category = category;
     this.actorId = actorId;
     this.dailyChannels = [];
+    this.opened = false;
   }
 
   async readInfo(): Promise<boolean> {
-    const res = await this.attach();
-    if (!res){
-      return false;
+    if (!this.opened){
+      const res = await this.attach();
+      if (!res){
+        return false;
+      }
+      this.opened = true;
     }
 
     await this.reader.clone().fetch_raw_msgs();

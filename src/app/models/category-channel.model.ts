@@ -13,17 +13,22 @@ export enum Category{
 export class CategoryChannel extends Channel implements InfoReader{
   category: Category;
   actorChannels: ActorChannel[];
+  opened: boolean;
 
   constructor(info: ChannelInfo, mainnet: boolean, category: Category) {
     super(info, mainnet);
     this.category = category;
     this.actorChannels = [];
+    this.opened = false;
   }
 
   async readInfo(): Promise<boolean> {
-    const res = await this.attach();
-    if (!res){
-      return false;
+    if (!this.opened){
+      const res = await this.attach();
+      if (!res){
+        return false;
+      }
+      this.opened = true;
     }
 
     await this.reader.clone().fetch_raw_msgs();

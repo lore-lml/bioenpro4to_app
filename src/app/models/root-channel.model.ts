@@ -8,18 +8,24 @@ import {RootState} from '../services/channel-manager.service';
 export class RootChannel extends Channel implements InfoReader{
   categoryChannels: CategoryChannel[];
   state: RootState;
+  opened: boolean;
 
   constructor(rootInfo: ChannelInfo, mainnet: boolean, state: RootState) {
     super(rootInfo, mainnet);
     this.state = state;
     this.categoryChannels = [];
+    this.opened = false;
   }
 
   async readInfo(): Promise<boolean> {
+    if (this.opened){
+      return await this.readNextLayer();
+    }
     const res = await this.attach();
     if (!res){
       return false;
     }
+    this.opened = true;
 
     if (!await this.reader.clone().fetch_raw_msgs()){
       return false;

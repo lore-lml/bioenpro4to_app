@@ -23,14 +23,6 @@ export class Tab1Page implements OnInit{
     {title: 'Pesate', imgSrc: 'assets/categories/scales.svg', link: '/scales'},
     {title: 'Biocelle', imgSrc: 'assets/categories/biocells.svg', link: '/biocells'},
   ];
-  /*lastUpdate = [
-    {imgSrc: 'assets/categories/trucks.svg', title: 'Actor1', timestamp: '10.55 - 21/05/2012'},
-    {imgSrc: 'assets/categories/trucks.svg', title: 'Actor2', timestamp: '9.55 - 20/05/2012'},
-    {imgSrc: 'assets/categories/scales.svg', title: 'Actor3', timestamp: '8.55 - 19/05/2012'},
-    {imgSrc: 'assets/categories/biocells.svg', title: 'Actor4', timestamp: '7.55 - 18/05/2012'},
-    {imgSrc: 'assets/categories/biocells.svg', title: 'Actor5', timestamp: '6.55 - 17/05/2012'},
-    {imgSrc: 'assets/categories/scales.svg', title: 'Actor6', timestamp: '5.55 - 16/05/2012'},
-  ];*/
 
   root: RootChannel;
   feed: Feed[];

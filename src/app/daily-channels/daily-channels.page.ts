@@ -11,6 +11,7 @@ import {ChannelManagerService} from '../services/channel-manager.service';
 })
 export class DailyChannelsPage implements OnInit {
 
+  readonly categories = {trucks: Category.trucks, scales: Category.scales, biocells: Category.biocells};
   id = '';
   channelList: ChannelList;
   category: Category;
@@ -30,17 +31,7 @@ export class DailyChannelsPage implements OnInit {
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
-    switch (category){
-      case 'trucks':
-        this.category = Category.trucks;
-        break;
-      case 'scales':
-        this.category = Category.scales;
-        break;
-      case 'biocells':
-        this.category = Category.biocells;
-        break;
-    }
+    this.category = this.categories[category];
     this.getMessages();
   }
 

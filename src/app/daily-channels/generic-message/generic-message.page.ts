@@ -11,6 +11,7 @@ import {Category} from '../../models/category-channel.model';
 })
 export class GenericMessagePage implements OnInit {
 
+  readonly categories = {trucks: Category.trucks, scales: Category.scales, biocells: Category.biocells};
   actorId = '';
   date = '';
   packets: Packet[] = [];
@@ -24,17 +25,7 @@ export class GenericMessagePage implements OnInit {
     const date = this.activatedRoute.snapshot.paramMap.get('date');
     this.date = `${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`;
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
-    switch (category){
-      case 'trucks':
-        this.category = Category.trucks;
-        break;
-      case 'scales':
-        this.category = Category.scales;
-        break;
-      case 'biocells':
-        this.category = Category.biocells;
-        break;
-    }
+    this.category = this.categories[category];
 
     this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);
     this.dataShowed = this.packets.map(() => false);

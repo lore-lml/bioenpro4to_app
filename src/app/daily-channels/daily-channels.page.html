@@ -16,7 +16,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list *ngIf="!channelList.isEmpty">
+  <ion-list>
     <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
     <ion-item lines="full">
       <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">

@@ -13,21 +13,23 @@ import {AlertsComponent} from '../modals/alerts/alerts.component';
 })
 export class Tab1Page implements OnInit{
 
+  readonly feedImgs = ['assets/categories/trucks.svg', 'assets/categories/scales.svg', 'assets/categories/biocells.svg'];
+  readonly categories = ['trucks', 'scales', 'biocells'];
   title = 'Monitoraggio';
   categoryOpts = {
     freeMode: true,
     slidesPerView: 2.5
   };
-  categoryInfo = [
-    {title: 'Camion', imgSrc: 'assets/categories/trucks.svg', link: '/trucks'},
-    {title: 'Pesate', imgSrc: 'assets/categories/scales.svg', link: '/scales'},
-    {title: 'Biocelle', imgSrc: 'assets/categories/biocells.svg', link: '/biocells'},
-  ];
-
+  categoryInfo: any;
   root: RootChannel;
   feed: Feed[];
 
   constructor(private channelManager: ChannelManagerService, private modalController: ModalController) {
+    this.categoryInfo = [
+      {title: 'Camion', imgSrc: this.feedImgs[0], link: '/trucks'},
+      {title: 'Pesate', imgSrc: this.feedImgs[1], link: '/scales'},
+      {title: 'Biocelle', imgSrc: this.feedImgs[2], link: '/biocells'},
+    ];
     this.feed = [];
   }
 
@@ -45,14 +47,7 @@ export class Tab1Page implements OnInit{
   }
 
   getFeedImg(feed: Feed){
-    switch (feed.category){
-      case Category.trucks:
-        return 'assets/categories/trucks.svg';
-      case Category.scales:
-        return 'assets/categories/scales.svg';
-      case Category.biocells:
-        return 'assets/categories/biocells.svg';
-    }
+    return this.feedImgs[feed.category];
   }
 
   async showAlerts() {
@@ -64,18 +59,7 @@ export class Tab1Page implements OnInit{
   }
 
   toPage(f: Feed): string{
-    let cat;
-    switch (f.category) {
-      case Category.trucks:
-        cat = 'trucks';
-        break;
-      case Category.scales:
-        cat = 'scales';
-        break;
-      case Category.biocells:
-        cat = 'biocells';
-        break;
-    }
+    const cat = this.categories[f.category];
     const date = f.creationDate.replace(/\//g, '');
     return `/${cat}/${f.actorId}/messages/${date}`;
   }

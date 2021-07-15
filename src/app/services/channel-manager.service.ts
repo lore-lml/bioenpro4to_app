@@ -5,6 +5,7 @@ import {ConnectableObservable, Observable, ReplaySubject} from 'rxjs';
 import {multicast} from 'rxjs/operators';
 import {Category} from '../models/category-channel.model';
 import {Packet} from '../models/packet.model';
+import {Storage} from '@ionic/storage-angular';
 
 export enum RootState{
   loading,
@@ -15,19 +16,25 @@ export enum RootState{
   providedIn: 'root'
 })
 export class ChannelManagerService {
-  readonly channelId = '6f455117d1a2c774a29814d8d130ab06d05ff02256267a3da6a2c2af3d868ffa0000000000000000';
-  readonly announceId = 'b061bdfe8be259b68c7af817';
+  readonly rootKey = 'root_info';
+  channelId = 'efb4c61c3b97f56df25cac781e2eb2820a5637f2d64192934539987d2047604d0000000000000000';
+  announceId = '2528e7e50698285d4c906189';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
-  updateObservable: any;
+  updateRoot: any;
+  loadingObservable: Observable<boolean>;
+  updateLoading: any;
+  private storage: any;
   private rootState = RootState.loading;
 
-  constructor() {
-    const rootInfo = new ChannelInfo(this.channelId, this.announceId);
-    this.rootChannel = new RootChannel(rootInfo, false, this.rootState);
+  constructor(private ionicStorage: Storage) {
+    this.loadingObservable = new Observable(observer => {
+      this.updateLoading = (nextValue: boolean) => observer.next(nextValue);
+      observer.next(true);
+    });
     this.rootObservable = new Observable(observer => {
-      this.updateObservable = (nextValue: RootChannel) => observer.next(nextValue);
-      this.readInfo().catch(e => console.error(e));
+      this.updateRoot = (nextValue: RootChannel) => observer.next(nextValue);
+      this.init().catch(e => console.error(e));
     }).pipe(
       multicast(() => new ReplaySubject<RootChannel>()),
     ) as ConnectableObservable<RootChannel>;
@@ -38,11 +45,14 @@ export class ChannelManagerService {
     return value >= 10 ? ''+value : '0'+value;
   }
 
-  async readInfo(){
-    const success = await this.rootChannel.readInfo();
-    this.rootState = success ? RootState.ready : RootState.unknown;
-    this.rootChannel.state = this.rootState;
-    this.updateObservable(this.rootChannel);
+  async init(){
+    if (this.storage === undefined){
+      this.storage = await this.ionicStorage.create();
+    }
+    await this.retrieveChannelInfo();
+    const rootInfo = new ChannelInfo(this.channelId, this.announceId);
+    this.rootChannel = new RootChannel(rootInfo, false, this.rootState);
+    await this.readInfo();
   }
 
   get root(): ConnectableObservable<RootChannel>{
@@ -51,6 +61,10 @@ export class ChannelManagerService {
 
   get isRootLoading(){
     return this.rootState === RootState.loading;
+  }
+
+  get loadingPopover(): Observable<boolean>{
+    return this.loadingObservable;
   }
 
   getActors(category: Category): Array<any>{
@@ -78,5 +92,39 @@ export class ChannelManagerService {
     const hours = date.getHours();
     const minutes = ChannelManagerService.zeroPad(date.getMinutes());
     return `${hours}.${minutes} - ${sDate}`;
+  }
+
+  async setChannelInfo(info: string): Promise<boolean>{
+    const regex = /[a-z0-9]+:[a-z0-9]+/;
+    if (!new RegExp(regex).test(info)){
+      return false;
+    }
+    const res = await this.storage.set(this.rootKey, info) !== null;
+    this.rootState = RootState.loading;
+    this.updateLoading(true);
+    this.init().catch(e => console.error(e));
+    return res;
+  }
+
+  private async retrieveChannelInfo(){
+    const info: string|null = await this.storage.get(this.rootKey);
+    if (info == null){
+      return;
+    }
+
+    const address = info.split(':');
+    if(address.length !== 2){
+      return;
+    }
+    this.channelId = address[0];
+    this.announceId = address[1];
+  }
+
+  private async readInfo(){
+    const success = await this.rootChannel.readInfo();
+    this.rootState = success ? RootState.ready : RootState.unknown;
+    this.rootChannel.state = this.rootState;
+    this.updateLoading(false);
+    this.updateRoot(this.rootChannel);
   }
 }

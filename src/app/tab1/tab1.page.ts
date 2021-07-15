@@ -35,7 +35,7 @@ export class Tab1Page implements OnInit{
 
   ngOnInit() {
     this.channelManager.root.subscribe(root => {
-      if (root !== undefined && root.state === RootState.ready) {
+      if (root.state === RootState.ready) {
         this.root = root;
         this.feed = this.root.getNewsFeed(5);
       }

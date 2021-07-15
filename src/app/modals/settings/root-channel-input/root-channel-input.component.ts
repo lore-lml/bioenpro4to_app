@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {PopoverController} from '@ionic/angular';
+import {ChannelManagerService} from '../../../services/channel-manager.service';
 
 @Component({
   selector: 'app-root-channel-input',
@@ -8,15 +9,22 @@ import {PopoverController} from '@ionic/angular';
 })
 export class RootChannelInputComponent implements OnInit {
   inputValue: string;
+  showError: boolean;
 
-  constructor(private popover: PopoverController) {}
+  constructor(private popover: PopoverController, private channelManager: ChannelManagerService) {}
 
   ngOnInit() {
+    this.showError = false;
     this.inputValue = '';
   }
 
   async confirmValue(){
-    await this.popover.dismiss(this.inputValue);
+    const success = await this.channelManager.setChannelInfo(this.inputValue);
+    if (success){
+      await this.popover.dismiss();
+      return;
+    }
+    this.showError = true;
   }
 
   async dismissPopover() {

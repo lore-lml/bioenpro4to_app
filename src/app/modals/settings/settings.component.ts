@@ -30,7 +30,6 @@ export class SettingsComponent implements OnInit {
       translucent: true
     });
     await popover.present();
-    const { data } = await popover.onDidDismiss();
-    console.log(data);
+    await popover.onDidDismiss();
   }
 }

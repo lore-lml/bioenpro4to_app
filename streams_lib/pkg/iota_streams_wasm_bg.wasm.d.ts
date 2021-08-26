@@ -7,7 +7,6 @@ export function channelreaderbuilder_seed(a: number, b: number, c: number): numb
 export function channelreaderbuilder_node(a: number, b: number, c: number): number;
 export function channelreaderbuilder_build(a: number, b: number, c: number, d: number, e: number): number;
 export function __wbg_channelreader_free(a: number): void;
-export function channelreader_builder(): number;
 export function channelreader_clone(a: number): number;
 export function channelreader_attach(a: number): number;
 export function channelreader_fetch_raw_msgs(a: number): number;
@@ -35,8 +34,8 @@ export function keynonce_clone(a: number): number;
 export function __wbindgen_malloc(a: number): number;
 export function __wbindgen_realloc(a: number, b: number, c: number): number;
 export const __wbindgen_export_2: WebAssembly.Table;
-export function _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h073fbc2ddd0950d8(a: number, b: number, c: number): void;
+export function _dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h95860014c1830f4a(a: number, b: number, c: number): void;
 export function __wbindgen_exn_store(a: number): void;
 export function __wbindgen_add_to_stack_pointer(a: number): number;
 export function __wbindgen_free(a: number, b: number): void;
-export function wasm_bindgen__convert__closures__invoke2_mut__h56e3bde6e31e8094(a: number, b: number, c: number, d: number): void;
+export function wasm_bindgen__convert__closures__invoke2_mut__h9439e3710fc4e7f5(a: number, b: number, c: number, d: number): void;

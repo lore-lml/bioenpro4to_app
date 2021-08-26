@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelManagerService} from './services/channel-manager.service';
 import {LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
+import {HttpChannelManagerService} from "./services/http-channel-manager.service";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,9 @@ export class AppComponent implements OnInit, OnDestroy{
   loading: Subscription;
   rootSub: Subscription;
   loadPopover: HTMLIonLoadingElement;
-  constructor(private channelManager: ChannelManagerService, private loadingController: LoadingController) {}
+  constructor(private channelManager: ChannelManagerService,
+              private loadingController: LoadingController,
+              private httpChannelManager: HttpChannelManagerService) {}
 
   async ngOnInit() {
     this.loadPopover = await this.initLoadingPopover();
@@ -26,6 +29,8 @@ export class AppComponent implements OnInit, OnDestroy{
     });
     // just to trigger the observable and the init method of the service;
     this.rootSub = this.channelManager.root.subscribe(() => {});
+    this.httpChannelManager.serverInfo()
+      .subscribe(res => console.log(res));
   }
 
   async ngOnDestroy() {

@@ -26,10 +26,6 @@ export class ChannelInfo {
 export class ChannelReader {
   free(): void;
 /**
-* @returns {ChannelReaderBuilder}
-*/
-  static builder(): ChannelReaderBuilder;
-/**
 * @returns {ChannelReader}
 */
   clone(): ChannelReader;

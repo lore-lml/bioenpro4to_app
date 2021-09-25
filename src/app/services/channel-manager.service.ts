@@ -17,8 +17,8 @@ export enum RootState{
 })
 export class ChannelManagerService {
   readonly rootKey = 'root_info';
-  channelId = '8f4fee8548695160fa474e7456f081b89df6c717bdb6e5f4deba29ae10fec5f80000000000000000';
-  announceId = 'a15f1645403be09b44c59e38';
+  channelId = 'cd42d2bb0096f8ce4dc0ee74222104b1c2b6fb4e336c85c42bc57cf94d8a92730000000000000000';
+  announceId = '89375ced49892f2d65d67f64';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateRoot: any;
@@ -35,7 +35,6 @@ export class ChannelManagerService {
     });
     this.rootObservable = new Observable(observer => {
       this.updateRoot = (nextValue: RootChannel) => observer.next(nextValue);
-      this.init().catch(e => console.error(e));
     }).pipe(
       multicast(() => new ReplaySubject<RootChannel>()),
     ) as ConnectableObservable<RootChannel>;

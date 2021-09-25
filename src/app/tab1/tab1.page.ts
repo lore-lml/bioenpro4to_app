@@ -4,7 +4,7 @@ import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
 import {ModalController} from '@ionic/angular';
 import {AlertsComponent} from '../modals/alerts/alerts.component';
-import {HttpChannelManagerService} from "../services/http-channel-manager.service";
+import {HttpChannelManagerService} from '../services/http-channel-manager.service';
 
 @Component({
   selector: 'app-tab1',
@@ -41,12 +41,12 @@ export class Tab1Page implements OnInit{
         this.feed = this.root.getNewsFeed(5);
       }
     });*/
-    this.httpChannelManager.newsFeed(5)
+    this.httpChannelManager.newsFeed(10)
       .subscribe(feed => this.feed = feed);
   }
 
   isLoading() {
-    return this.channelManager.isRootLoading;
+    return this.channelManager.isRootLoading && this.httpChannelManager.isLoading;
   }
 
   getFeedImg(feed: Feed){

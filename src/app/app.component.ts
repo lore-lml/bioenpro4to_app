@@ -11,15 +11,19 @@ import {HttpChannelManagerService} from './services/http-channel-manager.service
 })
 export class AppComponent implements OnInit, OnDestroy{
   loading: Subscription;
-  rootSub: Subscription;
   loadPopover: HTMLIonLoadingElement;
   constructor(private channelManager: ChannelManagerService,
-              private loadingController: LoadingController,
-              private httpChannelManager: HttpChannelManagerService) {}
+              private httpChannelManager: HttpChannelManagerService,
+              private loadingController: LoadingController) {}
 
   async ngOnInit() {
+    //await this.tangleMode();
+    await this.serverMode();
+  }
+
+  async serverMode(){
     this.loadPopover = await this.initLoadingPopover();
-    this.loading = this.channelManager.loadingObservable.subscribe(isLoading => {
+    this.loading = this.httpChannelManager.loadingObservable.subscribe(isLoading => {
       if (isLoading){
         this.loadPopover.present();
       }else{
@@ -27,18 +31,24 @@ export class AppComponent implements OnInit, OnDestroy{
         this.initLoadingPopover().then(load => this.loadPopover = load);
       }
     });
-    // just to trigger the observable and the init method of the service;
-    this.rootSub = this.channelManager.root.subscribe(() => {});
-    this.httpChannelManager.serverInfo()
-      .subscribe(res => console.log(res));
+  }
+
+  async tangleMode(){
+    this.loadPopover = await this.initLoadingPopover();
+    this.loading = this.channelManager.loadingObservable.subscribe(isLoading => {
+      if (isLoading){
+        this.loadPopover.present();
+        this.channelManager.init().catch(e => console.log(e));
+      }else{
+        this.loadPopover.dismiss();
+        this.initLoadingPopover().then(load => this.loadPopover = load);
+      }
+    });
   }
 
   async ngOnDestroy() {
     if (this.loading !== undefined){
       this.loading.unsubscribe();
-    }
-    if (this.rootSub !== undefined){
-      this.rootSub.unsubscribe();
     }
     await this.loadPopover.dismiss();
   }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Feed} from '../models/feed.model';
 import {Category} from '../models/category-channel.model';
@@ -10,11 +10,21 @@ import {Packet} from '../models/packet.model';
   providedIn: 'root'
 })
 export class HttpChannelManagerService {
-  readonly host: string = 'localhost';
+  readonly host: string = '192.168.1.91';
   readonly port: number = 8000;
   readonly baseUrl: string = `http://${this.host}:${this.port}`;
   readonly channelManager: string = `${this.baseUrl}/channel-manager`;
-  constructor(private http: HttpClient) {}
+  feedLoading: boolean;
+  loadingObservable: Observable<boolean>;
+  updateLoading: any;
+
+  constructor(private http: HttpClient) {
+    this.feedLoading = true;
+    this.loadingObservable = new Observable(observer => {
+      this.updateLoading = (nextValue: boolean) => observer.next(nextValue);
+      observer.next(true);
+    });
+  }
 
   private static categoryToString(category: Category): string{
     switch (category){
@@ -33,7 +43,11 @@ export class HttpChannelManagerService {
   newsFeed(numMsgs: number): Observable<Feed[]>{
     const path = `${this.channelManager}/actors-last-updates/${numMsgs}`;
     return this.http.get<any[]>(path).pipe(
-      map(res => res.map(feed => new Feed(feed.category, feed.actor_id, feed.timestamp)))
+      map(res => res.map(feed => new Feed(feed.category, feed.actor_id, feed.timestamp))),
+      tap(() => {
+        this.feedLoading = false;
+        this.updateLoading(false);
+      })
     );
   }
 
@@ -60,5 +74,13 @@ export class HttpChannelManagerService {
     return this.http.get<any[]>(path).pipe(
       map(res => res.map(msg => Packet.fromHttp(msg, '')))
     );
+  }
+
+  get isLoading(){
+    return this.feedLoading;
+  }
+
+  get loadingObs(){
+    return this.loadingObservable;
   }
 }

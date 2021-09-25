@@ -233,7 +233,7 @@ export function greet() {
     wasm.greet();
 }
 
-function __wbg_adapter_93(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_94(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h9439e3710fc4e7f5(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -323,6 +323,13 @@ export class ChannelReader {
     free() {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_channelreader_free(ptr);
+    }
+    /**
+    * @returns {ChannelReaderBuilder}
+    */
+    static builder() {
+        var ret = wasm.channelreader_builder();
+        return ChannelReaderBuilder.__wrap(ret);
     }
     /**
     * @returns {ChannelReader}
@@ -863,7 +870,7 @@ export function __wbg_new_c143a4f563f78c4e(arg0, arg1) {
             const a = state0.a;
             state0.a = 0;
             try {
-                return __wbg_adapter_93(a, state0.b, arg0, arg1);
+                return __wbg_adapter_94(a, state0.b, arg0, arg1);
             } finally {
                 state0.a = a;
             }
@@ -997,7 +1004,7 @@ export function __wbg_resolve_cae3d8f752f5db88(arg0) {
     return addHeapObject(ret);
 };
 
-export function __wbindgen_closure_wrapper3233(arg0, arg1, arg2) {
+export function __wbindgen_closure_wrapper3237(arg0, arg1, arg2) {
     var ret = makeMutClosure(arg0, arg1, 106, __wbg_adapter_32);
     return addHeapObject(ret);
 };

@@ -4,28 +4,41 @@ export class Packet{
   pPayload: string;
   mPayload: string;
 
-  constructor(msgId: string, pPayload: any, mPayload: any) {
-    this.msgId = msgId;
-    this.timestamp = -1;
+  private constructor() {}
+
+  static fromStreamsResponse(msgId: string, pPayload: any, mPayload: any): Packet{
+    const packet = new Packet();
+    packet.msgId = msgId;
+    packet.timestamp = -1;
 
     const decoder = new TextDecoder();
     const p = decoder.decode(pPayload);
     try {
       const r = JSON.parse(p);
-      this.pPayload = JSON.stringify(r, null, 2);
-      this.timestamp = Packet.getTimestamp(this.pPayload);
+      packet.pPayload = JSON.stringify(r, null, 2);
+      packet.timestamp = Packet.getTimestamp(packet.pPayload);
     }catch (_){
-      this.pPayload = p;
+      packet.pPayload = p;
     }
 
     const m = decoder.decode(mPayload);
     try {
       const r = JSON.parse(m);
-      this.mPayload = JSON.stringify(r, null, 2);
-      this.timestamp = Packet.getTimestamp(this.mPayload);
+      packet.mPayload = JSON.stringify(r, null, 2);
+      packet.timestamp = Packet.getTimestamp(packet.mPayload);
     }catch (_){
-      this.mPayload = m;
+      packet.mPayload = m;
     }
+    return packet;
+  }
+  static fromHttp(pPayload: any, mPayload: any): Packet{
+    const packet = new Packet();
+    packet.pPayload = JSON.stringify(pPayload);
+    packet.mPayload = JSON.stringify(mPayload);
+    packet.msgId = '';
+    const timestamp = this.getTimestamp(packet.pPayload);
+    packet.timestamp = timestamp !== -1 ? timestamp : this.getTimestamp(packet.mPayload);
+    return packet;
   }
 
   private static getTimestamp(json: string){

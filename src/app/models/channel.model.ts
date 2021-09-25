@@ -13,7 +13,7 @@ export abstract class Channel {
   protected constructor(info: ChannelInfo, mainnet: boolean) {
     this.info = info;
     this.mainnet = mainnet;
-    const node = mainnet ? 'https://chrysalis-nodes.iota.cafe' : 'https://api.lb-0.testnet.chrysalis2.com';
+    const node = mainnet ? 'https://chrysalis-nodes.iota.cafe' : 'https://api.lb-0.h.chrysalis-devnet.iota.cafe/';
     this.reader = new ChannelReaderBuilder().node(node).build(info.channel_id(), info.announce_id());
     this.attached = false;
   }

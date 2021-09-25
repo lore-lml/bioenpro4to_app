@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ChannelManagerService} from './services/channel-manager.service';
 import {LoadingController} from '@ionic/angular';
 import {Subscription} from 'rxjs';
-import {HttpChannelManagerService} from "./services/http-channel-manager.service";
+import {HttpChannelManagerService} from './services/http-channel-manager.service';
 
 @Component({
   selector: 'app-root',

@@ -41,7 +41,7 @@
         </ion-item>
         <ion-item lines="full" button="true" *ngFor="let t of channelList.channels" [routerLink]="t.col1">
           <ion-label>{{t.col1}}</ion-label>
-          <ion-label class="timestamp">{{channelManager.timestampToHoursDate(t.col2)}}</ion-label>
+          <ion-label class="timestamp">{{t.col2}}</ion-label>
         </ion-item>
       </ion-list>
       <ion-title *ngIf="channelList.isEmpty">Nessun canale presente</ion-title>

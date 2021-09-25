@@ -7,6 +7,7 @@ export function channelreaderbuilder_seed(a: number, b: number, c: number): numb
 export function channelreaderbuilder_node(a: number, b: number, c: number): number;
 export function channelreaderbuilder_build(a: number, b: number, c: number, d: number, e: number): number;
 export function __wbg_channelreader_free(a: number): void;
+export function channelreader_builder(): number;
 export function channelreader_clone(a: number): number;
 export function channelreader_attach(a: number): number;
 export function channelreader_fetch_raw_msgs(a: number): number;

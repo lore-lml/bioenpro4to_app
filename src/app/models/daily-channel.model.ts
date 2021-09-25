@@ -54,7 +54,7 @@ export class DailyChannel extends Channel{
       end = len;
     }
 
-    return this.msgs.map(m => new Feed(this.category, this.actorId, this.stringDate, m.timestamp))
+    return this.msgs.map(m => new Feed(this.category, this.actorId, m.timestamp))
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(start, end);
   }
@@ -72,7 +72,7 @@ export class DailyChannel extends Channel{
     try {
       while (this.reader.has_next_msg()) {
         const m = this.reader.pop_msg();
-        const p = new Packet(m.msg_id, m.public, m.masked);
+        const p = Packet.fromStreamsResponse(m.msg_id, m.public, m.masked);
         this.msgs.push(p);
       }
       //console.log(this.msgs);

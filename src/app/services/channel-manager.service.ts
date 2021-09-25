@@ -17,8 +17,8 @@ export enum RootState{
 })
 export class ChannelManagerService {
   readonly rootKey = 'root_info';
-  channelId = '98e6fd8c7e3ea271a236ea5bad91dbba0573832213bd00c12987fd22181622af0000000000000000';
-  announceId = '806376f72ee149d6cf435a3e';
+  channelId = '8f4fee8548695160fa474e7456f081b89df6c717bdb6e5f4deba29ae10fec5f80000000000000000';
+  announceId = 'a15f1645403be09b44c59e38';
   rootChannel: RootChannel;
   rootObservable: ConnectableObservable<RootChannel>;
   updateRoot: any;
@@ -31,6 +31,7 @@ export class ChannelManagerService {
     this.loadingObservable = new Observable(observer => {
       this.updateLoading = (nextValue: boolean) => observer.next(nextValue);
       observer.next(true);
+      console.log('loading observable');
     });
     this.rootObservable = new Observable(observer => {
       this.updateRoot = (nextValue: RootChannel) => observer.next(nextValue);

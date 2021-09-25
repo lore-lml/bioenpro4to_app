@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ChannelManagerService} from '../../services/channel-manager.service';
 import {Packet} from '../../models/packet.model';
 import {Category} from '../../models/category-channel.model';
+import {HttpChannelManagerService} from "../../services/http-channel-manager.service";
 
 @Component({
   selector: 'app-generic-message',
@@ -18,7 +19,8 @@ export class GenericMessagePage implements OnInit {
   dataShowed: boolean[];
   toShow: number;
   category: Category;
-  constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService) { }
+  constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService,
+              public httpChannelManager: HttpChannelManagerService) { }
 
   ngOnInit() {
     this.actorId = this.activatedRoute.snapshot.parent.paramMap.get('id');
@@ -27,8 +29,13 @@ export class GenericMessagePage implements OnInit {
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
     this.category = this.categories[category];
 
-    this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);
-    this.dataShowed = this.packets.map(() => false);
+    /*this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);
+    this.dataShowed = this.packets.map(() => false);*/
+    this.httpChannelManager.packetsOf(this.category, this.actorId, this.date)
+      .subscribe(packets => {
+        this.packets = packets;
+        this.dataShowed = this.packets.map(() => false);
+      });
   }
 
   toJson(msg: any){

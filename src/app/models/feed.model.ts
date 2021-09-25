@@ -3,14 +3,27 @@ import {Category} from './category-channel.model';
 export class Feed {
   category: Category;
   actorId: string;
-  creationDate: string;
   timestamp: number;
 
-  constructor(category: Category, actorId: string, creationDate: string, timestamp: number) {
-    this.category = category;
+  constructor(category: Category | string, actorId: string, timestamp: number) {
+    if (typeof category === 'string'){
+      switch (category){
+        case 'trucks': category = Category.trucks; break;
+        case 'weighing_scales': category = Category.scales; break;
+        case 'biocells': category = Category.biocells; break;
+      }
+    }
+    this.category = category as Category;
     this.actorId = actorId;
-    this.creationDate = creationDate;
     this.timestamp = timestamp;
+  }
+
+  get date(){
+    const date = new Date(this.timestamp*1000);
+    const day = Feed.zeroPad(date.getDate());
+    const month = Feed.zeroPad(date.getMonth()+1);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
   }
 
   get hourDate(){

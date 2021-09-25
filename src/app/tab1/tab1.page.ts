@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ChannelManagerService, RootState} from '../services/channel-manager.service';
 import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
-import {Category} from '../models/category-channel.model';
 import {ModalController} from '@ionic/angular';
 import {AlertsComponent} from '../modals/alerts/alerts.component';
+import {HttpChannelManagerService} from "../services/http-channel-manager.service";
 
 @Component({
   selector: 'app-tab1',
@@ -24,7 +24,8 @@ export class Tab1Page implements OnInit{
   root: RootChannel;
   feed: Feed[];
 
-  constructor(private channelManager: ChannelManagerService, private modalController: ModalController) {
+  constructor(private channelManager: ChannelManagerService, private httpChannelManager: HttpChannelManagerService,
+              private modalController: ModalController) {
     this.categoryInfo = [
       {title: 'Camion', imgSrc: this.feedImgs[0], link: '/trucks'},
       {title: 'Pesate', imgSrc: this.feedImgs[1], link: '/scales'},
@@ -34,12 +35,14 @@ export class Tab1Page implements OnInit{
   }
 
   ngOnInit() {
-    this.channelManager.root.subscribe(root => {
+    /*this.channelManager.root.subscribe(root => {
       if (root.state === RootState.ready) {
         this.root = root;
         this.feed = this.root.getNewsFeed(5);
       }
-    });
+    });*/
+    this.httpChannelManager.newsFeed(5)
+      .subscribe(feed => this.feed = feed);
   }
 
   isLoading() {
@@ -60,7 +63,7 @@ export class Tab1Page implements OnInit{
 
   toPage(f: Feed): string{
     const cat = this.categories[f.category];
-    const date = f.creationDate.replace(/\//g, '');
+    const date = f.date.replace(/\//g, '');
     return `/${cat}/${f.actorId}/messages/${date}`;
   }
 }

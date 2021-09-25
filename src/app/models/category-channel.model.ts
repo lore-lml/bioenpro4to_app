@@ -36,7 +36,7 @@ export class CategoryChannel extends Channel implements InfoReader{
     try{
       while(this.reader.has_next_msg()){
         const m = this.reader.pop_msg();
-        const p = new Packet(m.msg_id, m.public, m.masked);
+        const p = Packet.fromStreamsResponse(m.msg_id, m.public, m.masked);
         const jsonInfo = p.toJson()[0];
         const info = new ChannelInfo(jsonInfo.address.channel_id, jsonInfo.address.announce_id);
         this.actorChannels.push(new ActorChannel(info, this.mainnet, this.category, jsonInfo.actor_id));

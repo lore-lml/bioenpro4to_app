@@ -3,6 +3,7 @@ import {ChannelList, SortMode} from '../categories/channel-list.model';
 import {Category} from '../models/category-channel.model';
 import {ActivatedRoute} from '@angular/router';
 import {ChannelManagerService} from '../services/channel-manager.service';
+import {HttpChannelManagerService} from "../services/http-channel-manager.service";
 
 @Component({
   selector: 'app-daily-channels',
@@ -16,7 +17,8 @@ export class DailyChannelsPage implements OnInit {
   channelList: ChannelList;
   category: Category;
 
-  constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService) {
+  constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService,
+              public httpChannelManager: HttpChannelManagerService) {
     this.channelList = new ChannelList([
         {col1: '01/01/2021', col2: Math.trunc(Date.now() / 1000)},
         {col1: '02/01/2021', col2: Math.trunc(Date.now() / 1000) + 180},
@@ -36,8 +38,13 @@ export class DailyChannelsPage implements OnInit {
   }
 
   getMessages(){
-    this.channelList.setChannels(this.channelManager.getDailyChannels(this.id, this.category));
-    this.channelList.sortFilterChannels();
+    /*this.channelList.setChannels(this.channelManager.getDailyChannels(this.id, this.category));
+    this.channelList.sortFilterChannels();*/
+    this.httpChannelManager.dailyChannelsOfActor(this.category, this.id)
+      .subscribe(channels =>{
+        this.channelList.setChannels(channels);
+        this.channelList.sortFilterChannels();
+      });
   }
 
   async loadContent(ev) {

@@ -22,7 +22,7 @@ export class HttpChannelManagerService {
     this.feedLoading = true;
     this.loadingObservable = new Observable(observer => {
       this.updateLoading = (nextValue: boolean) => observer.next(nextValue);
-      observer.next(true);
+      this.updateLoading(true);
     });
   }
 

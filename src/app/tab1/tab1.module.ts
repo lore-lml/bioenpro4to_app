@@ -14,6 +14,6 @@ import {AlertsComponent} from '../modals/alerts/alerts.component';
     FormsModule,
     Tab1PageRoutingModule
   ],
-  declarations: [Tab1Page, AlertsComponent]
+    declarations: [Tab1Page, AlertsComponent]
 })
 export class Tab1PageModule {}

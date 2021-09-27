@@ -41,10 +41,6 @@ export class ChannelManagerService {
     this.rootObservable.connect();
   }
 
-  private static zeroPad(value: number): string{
-    return value >= 10 ? ''+value : '0'+value;
-  }
-
   async init(){
     if (this.storage === undefined){
       this.storage = await this.ionicStorage.create();
@@ -81,17 +77,6 @@ export class ChannelManagerService {
 
   async updateAll(){
     await this.readInfo();
-  }
-
-  timestampToHoursDate(timestamp: number){
-    const date = new Date(timestamp*1000);
-    const day = ChannelManagerService.zeroPad(date.getDate());
-    const month = ChannelManagerService.zeroPad(date.getMonth()+1);
-    const year = date.getFullYear();
-    const sDate =  `${day}/${month}/${year}`;
-    const hours = date.getHours();
-    const minutes = ChannelManagerService.zeroPad(date.getMinutes());
-    return `${hours}.${minutes} - ${sDate}`;
   }
 
   async setChannelInfo(info: string): Promise<boolean>{

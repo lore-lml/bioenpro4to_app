@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {map, tap} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {filter, groupBy, map, mergeMap, reduce, tap, toArray} from 'rxjs/operators';
+import {forkJoin, from, Observable, of, zip} from 'rxjs';
 import {Feed} from '../models/feed.model';
 import {Category} from '../models/category-channel.model';
 import {Packet} from '../models/packet.model';
@@ -61,10 +61,22 @@ export class HttpChannelManagerService {
   dailyChannelsOfActor(category: Category, actorId: string): Observable<any[]>{
     const path = `${this.channelManager}/categories/${HttpChannelManagerService.categoryToString(category)}/actors/${actorId}`;
     return this.http.get<any[]>(path).pipe(
-      map(res => res.map(ch => {
-        const f = new Feed(category, actorId, ch.creation_timestamp);
-        return {col1: f.date, col2: 5};
-      }))
+      mergeMap(res => res.map(ch => {
+        const d = new Date(ch.creation_timestamp * 1000);
+        return {day: d.getDate(), month: d.getMonth()+1, year: d.getFullYear()};
+      })),
+      reduce((acc, cur) => {
+        const key = `${cur.month}-${cur.year}`;
+        const prev = acc.has(key) ? acc.get(key) : [];
+        prev.push(cur);
+        acc.set(key, prev);
+        return acc;
+      }, new Map<string, any[]>()),
+      map(acc => {
+        const res = [];
+        acc.forEach((value, _) => res.push(value));
+        return res;
+      })
     );
   }
 

@@ -17,7 +17,7 @@
         </ion-avatar>
         <ion-label>
           <h2>Messaggio {{i+1}}</h2>
-          <h3>{{channelManager.timestampToHoursDate(p.timestamp)}}</h3>
+          <h3>{{timestampToHoursDate(p.timestamp)}}</h3>
         </ion-label>
         <ion-avatar slot="end">
           <ion-icon [name]="dataShowed[i] ? 'chevron-up-outline':'chevron-down-outline'" size="large"></ion-icon>

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-daily-channel-item',
@@ -30,7 +30,7 @@ export class DailyChannelItemComponent implements OnInit {
       case 9: return 'Set';
       case 10: return 'Ott';
       case 11: return 'Nov';
-      case 12: return 'Dec';
+      case 12: return 'Dic';
       default: return 'err';
     }
   }

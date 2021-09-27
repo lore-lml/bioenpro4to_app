@@ -16,20 +16,28 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
-    <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
-    <ion-item lines="full">
-      <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
-        <ion-button (click)="toggleSort(i)">
-          {{c.title}}
-          <ion-icon [name]="sortModeToIcon(c.mode)"></ion-icon>
-        </ion-button>
-      </ion-list-header>
-    </ion-item>
-    <ion-item lines="full" button="true" *ngFor="let t of channelList.channels" [routerLink]="toMessagePage(t.col1)">
-      <ion-label>{{t.col1}}</ion-label>
-      <ion-label class="timestamp">{{t.col2}}</ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let grid of channelGrids; let index = index" [expanded]="index === 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="my-font-bold">
+          <ion-icon name="calendar-outline" size="small"></ion-icon>
+          <ion-label>{{monthYearGrid(grid)}}</ion-label>
+        </mat-panel-title>
+        <mat-panel-description>
+          {{availableChannels(grid)}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <ion-grid>
+        <ion-row *ngFor="let i of grid.rowCounter()">
+          <ion-col *ngFor="let cols of grid.getRow(i)">
+            <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </mat-expansion-panel>
+  </mat-accordion>
 
 </ion-content>

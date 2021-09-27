@@ -3,7 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {ChannelManagerService} from '../../services/channel-manager.service';
 import {Packet} from '../../models/packet.model';
 import {Category} from '../../models/category-channel.model';
-import {HttpChannelManagerService} from "../../services/http-channel-manager.service";
+import {HttpChannelManagerService} from '../../services/http-channel-manager.service';
+import {UtilsService} from '../../services/utils.service';
 
 @Component({
   selector: 'app-generic-message',
@@ -19,8 +20,10 @@ export class GenericMessagePage implements OnInit {
   dataShowed: boolean[];
   toShow: number;
   category: Category;
-  constructor(private activatedRoute: ActivatedRoute, public channelManager: ChannelManagerService,
-              public httpChannelManager: HttpChannelManagerService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+              private channelManager: ChannelManagerService,
+              private httpChannelManager: HttpChannelManagerService,
+              private utils: UtilsService) { }
 
   ngOnInit() {
     this.actorId = this.activatedRoute.snapshot.parent.paramMap.get('id');
@@ -46,5 +49,9 @@ export class GenericMessagePage implements OnInit {
     const res = !this.dataShowed[idx];
     this.dataShowed = this.dataShowed.map(() => false);
     this.dataShowed[idx] = res;
+  }
+
+  timestampToHoursDate(timestamp: number) {
+    return this.utils.timestampToHoursDate(timestamp);
   }
 }

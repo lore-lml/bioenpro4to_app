@@ -2,12 +2,18 @@ ion-content{
   ion-title{
     margin-top: 40px;
     color: rgba(255,255,255,.5);
+    font-size: .9em;
+    font-weight: lighter;
     padding: 0;
   }
 
   ion-card-content{
     img{
       width: 130px;
+    }
+    ion-card-title{
+      font-size: 1.3em;
+      font-weight: normal;
     }
   }
 
@@ -47,16 +53,6 @@ ion-col{
     height: 30px;
     border-radius: 50%;
     background-color: rgba(255,255,255,.1);
-  }
-}
-
-.no-feed{
-  width: 100%;
-  text-align: center;
-  ion-title{
-    margin-top: 100px;
-    color: var(--ion-color-success);
-    font-size: 1em;
   }
 }
 

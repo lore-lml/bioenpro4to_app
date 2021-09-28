@@ -6,7 +6,7 @@ section{
   }
 }
 ion-text{
-  color: rgba(255,255,255,.5);
+  color: rgba(255,255,255,.7);
   font-size: .9em;
   font-weight: lighter;
 }
@@ -43,6 +43,7 @@ ion-card{
     }
     ion-text{
       font-size: .85em;
+      font-weight: normal;
     }
   }
 }

@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { BiocellsPageRoutingModule } from './biocells-routing.module';
 
 import { BiocellsPage } from './biocells.page';
+import {DailyChannelsPageModule} from '../../daily-channels/daily-channels.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    BiocellsPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        BiocellsPageRoutingModule,
+        DailyChannelsPageModule
+    ],
   declarations: [BiocellsPage]
 })
 export class BiocellsPageModule {}

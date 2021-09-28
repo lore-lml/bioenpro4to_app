@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ChannelManagerService, RootState} from '../services/channel-manager.service';
+import {ChannelManagerService} from '../services/channel-manager.service';
 import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
 import {ModalController} from '@ionic/angular';
@@ -23,6 +23,7 @@ export class Tab1Page implements OnInit{
   categoryInfo: any;
   root: RootChannel;
   feed: Feed[];
+  tryFeedRequest: number;
 
   constructor(private channelManager: ChannelManagerService, private httpChannelManager: HttpChannelManagerService,
               private modalController: ModalController) {
@@ -41,8 +42,24 @@ export class Tab1Page implements OnInit{
         this.feed = this.root.getNewsFeed(5);
       }
     });*/
+    this.tryFeedRequest = 3;
+    this.updateFeed();
+    setInterval(() => this.updateFeed(), 60*1000);
+  }
+
+  updateFeed(){
     this.httpChannelManager.newsFeed(10)
-      .subscribe(feed => this.feed = feed);
+      .subscribe(feed => {
+        if (feed === undefined && this.tryFeedRequest > 0){
+          this.tryFeedRequest--;
+          setTimeout(() => this.updateFeed(), 1000);
+          return;
+        }else if (feed === undefined){
+          this.feed = [];
+          return;
+        }
+        this.feed = feed;
+      });
   }
 
   isLoading() {

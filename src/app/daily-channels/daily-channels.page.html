@@ -8,36 +8,43 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-down"
-      refreshingSpinner="dots"
-      pullingText="Aggiorna lista ...">
-    </ion-refresher-content>
-  </ion-refresher>
+  <app-spinner *ngIf="spinnerVisible"></app-spinner>
 
-  <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let grid of channelGrids; let index = index" [expanded]="index === 0">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="my-font-bold">
-          <ion-icon name="calendar-outline" size="small"></ion-icon>
-          <ion-label>{{monthYearGrid(grid)}}</ion-label>
-        </mat-panel-title>
-        <mat-panel-description>
-          {{availableChannels(grid)}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+  <div *ngIf="!spinnerVisible">
+    <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
+      <ion-refresher-content
+        pullingIcon="arrow-down"
+        refreshingSpinner="dots"
+        pullingText="Aggiorna lista ...">
+      </ion-refresher-content>
+    </ion-refresher>
+  </div>
 
-      <ion-grid>
-        <ion-row *ngFor="let i of grid.rowCounter()">
-          <ion-col *ngFor="let cols of grid.getRow(i)">
-            <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+  <app-no-content message="Nessun canale disponibile" *ngIf="!spinnerVisible && noContent"></app-no-content>
 
-    </mat-expansion-panel>
-  </mat-accordion>
+  <div *ngIf="!spinnerVisible && !noContent">
+    <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let grid of channelGrids; let index = index" [expanded]="index === 0">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="my-font-bold">
+            <ion-icon name="calendar-outline" size="small"></ion-icon>
+            <ion-label>{{monthYearGrid(grid)}}</ion-label>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{availableChannels(grid)}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
+        <ion-grid>
+          <ion-row *ngFor="let i of grid.rowCounter()">
+            <ion-col *ngFor="let cols of grid.getRow(i)">
+              <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 </ion-content>

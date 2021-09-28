@@ -24,16 +24,14 @@
     </ion-slide>
   </ion-slides>
 
-  <ion-title class="ion-margin-start">Ultimi aggiornamenti</ion-title>
+  <ion-title class="ion-margin-start">Feed Giornaliero</ion-title>
   <ion-list lines="full" *ngIf="!isLoading() else skeleton">
     <ion-item *ngFor="let f of feed" button="true" [routerLink]="toPage(f)">
       <img [src]="getFeedImg(f)" alt="">
       <ion-label>{{f.actorId}}</ion-label>
       <ion-text>{{f.timeAgo}}</ion-text>
     </ion-item>
-    <section class="no-feed" *ngIf="feed.length === 0">
-      <ion-title>Nessun aggiornamento</ion-title>
-    </section>
+    <app-no-content message="Nessun feed disponibile" *ngIf="feed.length === 0"></app-no-content>
   </ion-list>
 
   <ng-template id="skeleton" #skeleton>

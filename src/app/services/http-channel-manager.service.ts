@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {filter, groupBy, map, mergeMap, reduce, tap, toArray} from 'rxjs/operators';
-import {forkJoin, from, Observable, of, zip} from 'rxjs';
+import {map, mergeMap, reduce, tap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 import {Feed} from '../models/feed.model';
 import {Category} from '../models/category-channel.model';
 import {Packet} from '../models/packet.model';
@@ -41,6 +41,9 @@ export class HttpChannelManagerService {
   }
 
   newsFeed(numMsgs: number): Observable<Feed[]>{
+    if (this.updateLoading === undefined){
+      return of(undefined);
+    }
     const path = `${this.channelManager}/actors-last-updates/${numMsgs}`;
     return this.http.get<any[]>(path).pipe(
       map(res => res.map(feed => new Feed(feed.category, feed.actor_id, feed.timestamp))),

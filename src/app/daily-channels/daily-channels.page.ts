@@ -17,31 +17,36 @@ export class DailyChannelsPage implements OnInit {
   id = '';
   category: Category;
   channelGrids: DailyChannelGrid[];
+  spinnerVisible: boolean;
   constructor(private activatedRoute: ActivatedRoute,
               private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
               private utils: UtilsService) {
     this.channelGrids = [];
+    this.spinnerVisible = true;
   }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
     this.category = this.categories[category];
-    this.getMessages();
+    this.getMessages(() => this.spinnerVisible = false);
   }
 
-  getMessages(){
+  getMessages(onComplete?: () => void){
     /*this.channelList.setChannels(this.channelManager.getDailyChannels(this.id, this.category));
     this.channelList.sortFilterChannels();*/
     this.httpChannelManager.dailyChannelsOfActor(this.category, this.id)
       .subscribe(channels =>{
         this.channelGrids = channels.map(dateFormats => new DailyChannelGrid(dateFormats));
+        if (onComplete !== undefined){
+          onComplete();
+        }
       });
   }
 
   async loadContent(ev) {
-    setTimeout(() => ev.target.complete(), 2000);
+    this.getMessages(() => ev.target.complete());
   }
 
   filterChannels(ev: any) {
@@ -77,5 +82,9 @@ export class DailyChannelsPage implements OnInit {
       default: month = 'err'; break;
     }
     return `${month} ${year}`;
+  }
+
+  get noContent(): boolean{
+    return this.channelGrids.length === 0;
   }
 }

@@ -1,0 +1,12 @@
+.spinner{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  ion-spinner{
+    width: 3em;
+    height: 3em;
+  }
+}

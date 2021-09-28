@@ -19,37 +19,40 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
-    <ion-refresher-content
-      pullingIcon="arrow-down"
-      refreshingSpinner="dots"
-      pullingText="Aggiorna lista ...">
-    </ion-refresher-content>
-  </ion-refresher>
+  <app-spinner *ngIf="spinnerVisible"></app-spinner>
+  <div *ngIf="!spinnerVisible">
+    <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
+      <ion-refresher-content
+        pullingIcon="arrow-down"
+        refreshingSpinner="dots"
+        pullingText="Aggiorna lista ...">
+      </ion-refresher-content>
+    </ion-refresher>
 
-  <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
-    <ion-slide>
-      <ion-list *ngIf="!channelList.isEmpty">
-        <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
-        <ion-item lines="full">
-          <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
-            <ion-button (click)="toggleSort(i)">
-              {{c.title}}
-              <ion-icon [name]="sortModeToIcon(c.mode)"></ion-icon>
-            </ion-button>
-          </ion-list-header>
-        </ion-item>
-        <ion-item lines="full" button="true" *ngFor="let t of channelList.channels" [routerLink]="t.col1">
-          <ion-label>{{t.col1}}</ion-label>
-          <ion-label class="timestamp">{{t.col2}}</ion-label>
-        </ion-item>
-      </ion-list>
+    <ion-slides #slides pager="false" [options]="sliderOptions" (ionSlideDidChange)="slideChanged()" (ionSlidesDidLoad)="slideChanged()">
+      <ion-slide>
+        <ion-list *ngIf="!channelList.isEmpty">
+          <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
+          <ion-item lines="full">
+            <ion-list-header *ngFor="let c of channelList.sortingColumn; index as i">
+              <ion-button (click)="toggleSort(i)">
+                {{c.title}}
+                <ion-icon [name]="sortModeToIcon(c.mode)"></ion-icon>
+              </ion-button>
+            </ion-list-header>
+          </ion-item>
+          <ion-item lines="full" button="true" *ngFor="let t of channelList.channels" [routerLink]="t.col1">
+            <ion-label>{{t.col1}}</ion-label>
+            <ion-label class="timestamp">{{t.col2}}</ion-label>
+          </ion-item>
+        </ion-list>
 
-      <ion-title *ngIf="channelList.isEmpty">Nessun canale presente</ion-title>
-    </ion-slide>
-    <ion-slide>
-      <img src="assets/categories/map2.png" alt="">
-    </ion-slide>
-  </ion-slides>
+        <app-no-content message="Nessun canale presente" *ngIf="channelList.isEmpty"></app-no-content>
 
+      </ion-slide>
+      <ion-slide>
+        <img src="assets/categories/map2.png" alt="">
+      </ion-slide>
+    </ion-slides>
+  </div>
 </ion-content>

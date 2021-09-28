@@ -3,7 +3,7 @@ import {IonSlides} from '@ionic/angular';
 import {Category} from '../../models/category-channel.model';
 import {ChannelList, SortMode} from '../channel-list.model';
 import {ChannelManagerService} from '../../services/channel-manager.service';
-import {HttpChannelManagerService} from "../../services/http-channel-manager.service";
+import {HttpChannelManagerService} from '../../services/http-channel-manager.service';
 
 @Component({
   selector: 'app-biocells',
@@ -22,30 +22,33 @@ export class BiocellsPage implements OnInit {
 
   category = Category.biocells;
   channelList: ChannelList;
+  spinnerVisible: boolean;
 
   constructor(public channelManager: ChannelManagerService, public httpChannelManager: HttpChannelManagerService) {
     this.channelList = new ChannelList([
-        {col1: 'xasd', col2: Math.trunc(Date.now() / 1000)},
-        {col1: 'egas', col2: Math.trunc(Date.now() / 1000) + 180},
-        {col1: 'ksae', col2: Math.trunc(Date.now() / 1000) + 60},
-        {col1: 'zzzz', col2: Math.trunc(Date.now() / 1000) + 7886}
+        // {col1: 'xasd', col2: Math.trunc(Date.now() / 1000)},
+        // {col1: 'egas', col2: Math.trunc(Date.now() / 1000) + 180},
+        // {col1: 'ksae', col2: Math.trunc(Date.now() / 1000) + 60},
+        // {col1: 'zzzz', col2: Math.trunc(Date.now() / 1000) + 7886}
       ],
       [{title: 'Id Biocella', mode: SortMode.none}, {title: 'Channel Disponibili', mode: SortMode.none}]
     );
-    this.channelList.sortFilterChannels();
+    //this.channelList.sortFilterChannels();
+    this.spinnerVisible = true;
   }
 
   ngOnInit() {
-    this.getBiocells();
+    this.getBiocells(() => this.spinnerVisible = false);
   }
 
-  getBiocells(){
+  getBiocells(onComplete: () => void){
     /*this.channelList.setChannels(this.channelManager.getActors(this.category));
     this.channelList.sortFilterChannels();*/
     this.httpChannelManager.actorsOfCategory(this.category)
       .subscribe(actors => {
         this.channelList.setChannels(actors);
         this.channelList.sortFilterChannels();
+        onComplete();
       });
   }
 
@@ -59,9 +62,8 @@ export class BiocellsPage implements OnInit {
 
   async loadContent(ev) {
     if(this.segment === 0) {
-      await this.channelManager.updateAll();
-      this.getBiocells();
-      ev.target.complete();
+      //await this.channelManager.updateAll();
+      this.getBiocells(() => ev.target.complete());
     }else{
       setTimeout(() => ev.target.complete(), 2000);
     }

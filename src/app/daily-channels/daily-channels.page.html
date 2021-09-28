@@ -24,7 +24,7 @@
 
   <div *ngIf="!spinnerVisible && !noContent">
     <ion-searchbar animated color="tertiary" (ionChange)="filterChannels($event)"></ion-searchbar>
-    <mat-accordion>
+    <mat-accordion *ngIf="!isSearching">
       <mat-expansion-panel *ngFor="let grid of channelGrids; let index = index" [expanded]="index === 0">
         <mat-expansion-panel-header>
           <mat-panel-title class="my-font-bold">
@@ -46,5 +46,13 @@
 
       </mat-expansion-panel>
     </mat-accordion>
+
+    <ion-grid *ngIf="isSearching">
+      <ion-row *ngFor="let i of filterGrid.rowCounter()">
+        <ion-col *ngFor="let cols of filterGrid.getRow(i)">
+          <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>

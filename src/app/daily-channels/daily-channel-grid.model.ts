@@ -20,6 +20,10 @@ export class DailyChannelGrid{
     return this.dateListPr.slice(index*this.nCol, (index+1)*this.nCol);
   }
 
+  get dateList(){
+    return this.dateListPr;
+  }
+
   set dateList(dateList: ChannelDateFormat[]){
     this.dateListPr = dateList;
   };
@@ -32,10 +36,13 @@ export class DailyChannelGrid{
     return this.dateListPr.length;
   }
 
-  monthYear(): number[]{
+  monthYear(i: number): number[]{
     if (this.listLength===0){
       return null;
     }
-    return [this.dateListPr[0].month, this.dateListPr[0].year];
+    if (i >= this.listLength){
+      return [];
+    }
+    return [this.dateListPr[i].month, this.dateListPr[i].year];
   }
 }

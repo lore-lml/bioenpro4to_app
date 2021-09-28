@@ -18,12 +18,17 @@ export class DailyChannelsPage implements OnInit {
   category: Category;
   channelGrids: DailyChannelGrid[];
   spinnerVisible: boolean;
+  isSearching: boolean;
+  searchingGrid: DailyChannelGrid;
+  filterGrid: DailyChannelGrid;
   constructor(private activatedRoute: ActivatedRoute,
               private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
               private utils: UtilsService) {
     this.channelGrids = [];
     this.spinnerVisible = true;
+    this.isSearching = false;
+    this.filterGrid = new DailyChannelGrid([]);
   }
 
   ngOnInit() {
@@ -39,6 +44,9 @@ export class DailyChannelsPage implements OnInit {
     this.httpChannelManager.dailyChannelsOfActor(this.category, this.id)
       .subscribe(channels =>{
         this.channelGrids = channels.map(dateFormats => new DailyChannelGrid(dateFormats));
+        const flatList = this.channelGrids.map(grid => grid.dateList)
+          .reduce((prev, curr) => prev.concat(curr));
+        this.searchingGrid = new DailyChannelGrid(flatList);
         if (onComplete !== undefined){
           onComplete();
         }
@@ -50,6 +58,9 @@ export class DailyChannelsPage implements OnInit {
   }
 
   filterChannels(ev: any) {
+    const filterVal = ev.currentTarget.value.trim();
+    this.isSearching = filterVal !== '';
+    this.filteredGrid(filterVal);
   }
 
   toMessagePage(ch: ChannelDateFormat): string{
@@ -63,28 +74,30 @@ export class DailyChannelsPage implements OnInit {
   }
 
   monthYearGrid(grid: DailyChannelGrid): string{
-    const mmyy = grid.monthYear();
+    const mmyy = grid.monthYear(0);
+    const month = this.utils.monthToString(mmyy[0]);
     const year = mmyy[1];
-    let month;
-    switch (mmyy[0]) {
-      case 1: month = 'Gennaio'; break;
-      case 2: month = 'Febbraio'; break;
-      case 3: month = 'Marzo'; break;
-      case 4: month = 'Aprile'; break;
-      case 5: month = 'Maggio'; break;
-      case 6: month = 'Giugno'; break;
-      case 7: month = 'Luglio'; break;
-      case 8: month = 'Agosto'; break;
-      case 9: month = 'Settembre'; break;
-      case 10: month = 'Ottobre'; break;
-      case 11: month = 'Novembre'; break;
-      case 12: month = 'Dicembre'; break;
-      default: month = 'err'; break;
-    }
     return `${month} ${year}`;
   }
 
   get noContent(): boolean{
     return this.channelGrids.length === 0;
+  }
+
+  filteredGrid(filterVal: string){
+    if (filterVal === ''){
+      this.filterGrid.dateList = [];
+      return;
+    }
+    this.filterGrid.dateList = this.searchingGrid.dateList
+      .map(v => {
+        const d1 = `${this.utils.zeroPad(v.day)}/${this.utils.zeroPad(v.month)}/${v.year}`;
+        const d2 = `${this.utils.zeroPad(v.day)}-${this.utils.zeroPad(v.month)}-${v.year}`;
+        const d3 = `${v.day}/${v.month}/${v.year}`;
+        const d4 = `${v.day} ${this.utils.monthToString(v.month)} ${v.year}`;
+        return [v, [d1, d2, d3, d4]];
+      })
+      .filter(v => (v[1] as string[]).some(value => value.includes(filterVal)))
+      .map(v => v[0] as ChannelDateFormat);
   }
 }

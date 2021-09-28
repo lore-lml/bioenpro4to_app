@@ -9,8 +9,7 @@ export class DailyChannelGrid{
   private dateListPr: ChannelDateFormat[];
 
   constructor(dateList: ChannelDateFormat[]) {
-   this.dateListPr = dateList;
-   this.nRows = Math.floor(dateList.length / this.nCol)+1;
+   this.dateList = dateList;
   }
 
   getRow(index: number): ChannelDateFormat[]{
@@ -25,7 +24,11 @@ export class DailyChannelGrid{
   }
 
   set dateList(dateList: ChannelDateFormat[]){
-    this.dateListPr = dateList;
+    this.dateListPr = dateList.sort((a, b) => {
+      const k1 = new Date(a.year, a.month, a.day);
+      const k2 = new Date(b.year, b.month, b.day);
+      return k2.getTime() - k1.getTime();
+    });
     this.nRows = Math.floor(dateList.length / this.nCol)+1;
   };
 

@@ -7,31 +7,33 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list *ngIf="packets.length > 0">
+<ion-content fullscreen>
+  <app-spinner *ngIf="spinnerVisible"></app-spinner>
+  <div *ngIf="!spinnerVisible">
+    <ion-refresher slot="fixed" (ionRefresh)="loadContent($event)">
+      <ion-refresher-content
+        pullingIcon="arrow-down"
+        refreshingSpinner="dots"
+        pullingText="Aggiorna lista ...">
+      </ion-refresher-content>
+    </ion-refresher>
 
-    <div *ngFor="let p of packets; let i = index">
-      <ion-item button="true" (click)="toggleShow(i)">
-        <ion-avatar slot="start">
-          <ion-icon name="mail-outline" size="large"></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <h2>Messaggio {{i+1}}</h2>
-          <h3>{{timestampToHoursDate(p.timestamp)}}</h3>
-        </ion-label>
-        <ion-avatar slot="end">
-          <ion-icon [name]="dataShowed[i] ? 'chevron-up-outline':'chevron-down-outline'" size="large"></ion-icon>
-        </ion-avatar>
-      </ion-item>
-      <ion-card *ngIf="dataShowed[i]">
-        <ion-card-content>
-          <pre>{{p.pPayload}}</pre>
-        </ion-card-content>
-      </ion-card>
-    </div>
+    <app-no-content message="Nessun messaggio presente" *ngIf="packets.length === 0"></app-no-content>
+    <mat-accordion *ngIf="packets.length !== 0">
+      <mat-expansion-panel *ngFor="let p of packets; let i = index">
+        <mat-expansion-panel-header>
+          <mat-panel-title class="my-font-bold">
+            <ion-icon name="mail-outline" size="small"></ion-icon>
+            <ion-label>Messaggio {{i+1}}</ion-label>
+          </mat-panel-title>
+          <mat-panel-description>
+            {{timestampToHoursDate(p.timestamp)}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-  </ion-list>
-  <div class="no-messages">
-    <ion-title *ngIf="packets.length === 0">Nessun messaggio presente</ion-title>
+        <pre>{{toJson(p.pPayload)}}</pre>
+
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </ion-content>

@@ -1,12 +1,38 @@
-.no-messages{
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  ion-title{
-    width: fit-content;
-    color: #20bca4;
-    padding-bottom: 100px;
+mat-accordion{
+  mat-expansion-panel, mat-expansion-panel-header{
+    background-color: var(--ion-color-primary) !important;
   }
+  ::ng-deep .mat-expansion-indicator::after{
+    color: rgba(255,255,255,.7);
+  }
+  mat-expansion-panel{
+    ::ng-deep .mat-expansion-panel-body{
+      padding: 0;
+    }
+    mat-expansion-panel-header{
+      padding: 0 15px;
+      mat-panel-title{
+        color: white;
+        ion-label{
+          margin: 0 5px;
+        }
+        ion-icon{
+          color: var(--ion-color-warning);
+        }
+      }
+      mat-panel-description{
+        color: rgba(255,255,255,.5);
+      }
+    }
+    pre{
+      text-align: left;
+      color: white;
+      padding: 0 20px;
+    }
+  }
+}
+
+
+ion-refresher{
+  z-index: 100;
 }

@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { GenericMessagePageRoutingModule } from './generic-message-routing.module';
 
 import { GenericMessagePage } from './generic-message.page';
+import {DailyChannelsPageModule} from '../daily-channels.module';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GenericMessagePageRoutingModule
+    GenericMessagePageRoutingModule,
+    DailyChannelsPageModule,
+    MatExpansionModule
   ],
   declarations: [GenericMessagePage]
 })

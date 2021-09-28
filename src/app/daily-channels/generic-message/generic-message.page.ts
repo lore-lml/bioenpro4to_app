@@ -17,13 +17,14 @@ export class GenericMessagePage implements OnInit {
   actorId = '';
   date = '';
   packets: Packet[] = [];
-  dataShowed: boolean[];
-  toShow: number;
   category: Category;
+  spinnerVisible: boolean;
   constructor(private activatedRoute: ActivatedRoute,
               private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
-              private utils: UtilsService) { }
+              private utils: UtilsService) {
+    this.spinnerVisible = true;
+  }
 
   ngOnInit() {
     this.actorId = this.activatedRoute.snapshot.parent.paramMap.get('id');
@@ -32,26 +33,29 @@ export class GenericMessagePage implements OnInit {
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
     this.category = this.categories[category];
 
-    /*this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);
-    this.dataShowed = this.packets.map(() => false);*/
+    /*this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);*/
+    this.getPackets(() => this.spinnerVisible = false);
+  }
+
+  getPackets(onComplete: () => void){
     this.httpChannelManager.packetsOf(this.category, this.actorId, this.date)
       .subscribe(packets => {
         this.packets = packets;
-        this.dataShowed = this.packets.map(() => false);
+        onComplete();
       });
   }
 
   toJson(msg: any){
-    return JSON.stringify(msg, null, 2);
-  }
-
-  toggleShow(idx: number){
-    const res = !this.dataShowed[idx];
-    this.dataShowed = this.dataShowed.map(() => false);
-    this.dataShowed[idx] = res;
+    const json = JSON.parse(msg);
+    console.log(JSON.stringify(json, null, 1));
+    return JSON.stringify(json, null, 1);
   }
 
   timestampToHoursDate(timestamp: number) {
     return this.utils.timestampToHoursDate(timestamp);
+  }
+
+  loadContent(ev: any) {
+    this.getPackets(() => ev.target.complete());
   }
 }

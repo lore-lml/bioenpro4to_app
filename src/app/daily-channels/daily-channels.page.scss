@@ -5,6 +5,7 @@ ion-searchbar{
 mat-accordion{
   mat-expansion-panel, mat-expansion-panel-header{
     background-color: var(--ion-color-primary) !important;
+    box-shadow: none !important;
   }
   ::ng-deep .mat-expansion-indicator::after{
     color: rgba(255,255,255,.7);

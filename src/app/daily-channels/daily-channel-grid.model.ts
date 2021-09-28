@@ -26,6 +26,7 @@ export class DailyChannelGrid{
 
   set dateList(dateList: ChannelDateFormat[]){
     this.dateListPr = dateList;
+    this.nRows = Math.floor(dateList.length / this.nCol)+1;
   };
 
   rowCounter(): number[]{

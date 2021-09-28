@@ -60,7 +60,7 @@ export class DailyChannelsPage implements OnInit {
   filterChannels(ev: any) {
     const filterVal = ev.currentTarget.value.trim();
     this.isSearching = filterVal !== '';
-    this.filteredGrid(filterVal);
+    this.filteredGrid(filterVal.toLowerCase());
   }
 
   toMessagePage(ch: ChannelDateFormat): string{
@@ -89,12 +89,13 @@ export class DailyChannelsPage implements OnInit {
       this.filterGrid.dateList = [];
       return;
     }
+    console.log(filterVal);
     this.filterGrid.dateList = this.searchingGrid.dateList
       .map(v => {
         const d1 = `${this.utils.zeroPad(v.day)}/${this.utils.zeroPad(v.month)}/${v.year}`;
         const d2 = `${this.utils.zeroPad(v.day)}-${this.utils.zeroPad(v.month)}-${v.year}`;
         const d3 = `${v.day}/${v.month}/${v.year}`;
-        const d4 = `${v.day} ${this.utils.monthToString(v.month)} ${v.year}`;
+        const d4 = `${v.day} ${this.utils.monthToString(v.month)} ${v.year}`.toLowerCase();
         return [v, [d1, d2, d3, d4]];
       })
       .filter(v => (v[1] as string[]).some(value => value.includes(filterVal)))

@@ -9,9 +9,12 @@ import { AppComponent } from './app.component';
 import {IonicStorageModule} from '@ionic/storage-angular';
 import {HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {SetupComponent} from './modals/setup/setup.component';
+import {ServerDomainInputComponent} from './modals/settings/server-domain-input/server-domain-input.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, SetupComponent, ServerDomainInputComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -19,7 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     IonicStorageModule.forRoot(),
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

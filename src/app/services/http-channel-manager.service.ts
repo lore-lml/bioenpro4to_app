@@ -10,13 +10,11 @@ import {Packet} from '../models/packet.model';
   providedIn: 'root'
 })
 export class HttpChannelManagerService {
-  readonly host: string = '192.168.1.91';
-  readonly port: number = 8000;
-  readonly baseUrl: string = `http://${this.host}:${this.port}`;
-  readonly channelManager: string = `${this.baseUrl}/channel-manager`;
-  feedLoading: boolean;
   loadingObservable: Observable<boolean>;
-  updateLoading: any;
+  private baseUrl: string;
+  private channelManager: string;
+  private feedLoading: boolean;
+  private updateLoading: any;
 
   constructor(private http: HttpClient) {
     this.feedLoading = true;
@@ -34,6 +32,11 @@ export class HttpChannelManagerService {
     }
   }
 
+  set serverURL(url: string){
+   this.baseUrl = url;
+   this.channelManager = `${this.baseUrl}/channel-manager`;
+  }
+
   serverInfo(){
     return this.http.get(this.baseUrl).pipe(
       map(res => JSON.stringify(res, null, 1))
@@ -42,6 +45,7 @@ export class HttpChannelManagerService {
 
   newsFeed(numMsgs: number): Observable<Feed[]>{
     if (this.updateLoading === undefined){
+      console.log('error');
       return of(undefined);
     }
     const path = `${this.channelManager}/actors-last-updates/${numMsgs}`;

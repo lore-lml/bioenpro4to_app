@@ -23,18 +23,17 @@ const routes: Routes = [
     loadChildren: () => import('./categories/biocells/biocells.module').then(m => m.BiocellsPageModule)
   },
   {
-    path: '**',
-    redirectTo: 'tabs/tab1'
-  },
-  {
     path: 'generic-message',
     loadChildren: () => import('./daily-channels/generic-message/generic-message.module').then(m => m.GenericMessagePageModule)
-  },  {
+  },
+  {
     path: 'daily-channels',
     loadChildren: () => import('./daily-channels/daily-channels.module').then( m => m.DailyChannelsPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'tabs/tab1'
   }
-
-
 ];
 @NgModule({
   imports: [

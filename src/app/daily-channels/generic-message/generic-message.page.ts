@@ -47,7 +47,6 @@ export class GenericMessagePage implements OnInit {
 
   toJson(msg: any){
     const json = JSON.parse(msg);
-    console.log(JSON.stringify(json, null, 1));
     return JSON.stringify(json, null, 1);
   }
 

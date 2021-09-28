@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      {{title}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <section>
+    <ion-list>
+      <ion-item lines="none">
+        <ion-avatar>
+          <ion-icon name="git-network-outline" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label class="ion-text-wrap ion-text-justify ion-padding-horizontal">
+          <h2>Fonte</h2>
+          <p>Scegli se collegarti al server della tua organizzazione o al Tangle</p>
+        </ion-label>
+        <ion-select interface="action-sheet" cancel-text="Chiudi" [value]="selectedMode" (ionChange)="sourceChange($event)">
+          <ion-select-option value="server">Server</ion-select-option>
+          <ion-select-option value="tangle">Tangle</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </section>
+
+  <section>
+    <ion-title>Opzioni</ion-title>
+    <ion-list class="options" *ngIf="selectedMode === 'server'">
+      <ion-item lines="none">
+        <ion-icon name="shield-checkmark-outline" slot="start" color="success"></ion-icon>
+        <ion-label>SSL</ion-label>
+        <ion-toggle slot="end" name="ssl" [(ngModel)]="secureHttp"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon name="wifi-outline" slot="start" color="warning"></ion-icon>
+        <ion-label>Ip - Dominio</ion-label>
+        <ion-input placeholder="192.168.1.91" color="success" [(ngModel)]="serverAddr"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon name="wifi-outline" slot="start" color="warning"></ion-icon>
+        <ion-label>Porta TCP</ion-label>
+        <ion-input placeholder="8000" color="success" type="number" [(ngModel)]="serverPort"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="options" *ngIf="selectedMode === 'tangle'">
+      <ion-item lines="none" button>
+        <ion-icon name="code-working-outline" slot="start" color="warning"></ion-icon>
+        <ion-label>Root Channel</ion-label>
+        <ion-input placeholder="<ch_addr> : <ann_addr>" color="success" [(ngModel)]="tangleAddr"></ion-input>
+      </ion-item>
+    </ion-list>
+  </section>
+
+  <section class="mybuttons">
+    <ion-button expand="block" color="success" (click)="confirm()">Conferma</ion-button>
+    <ion-button expand="block" color="danger" *ngIf="!locked">Chiudi</ion-button>
+  </section>
+</ion-content>

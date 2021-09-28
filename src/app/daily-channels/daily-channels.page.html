@@ -47,12 +47,15 @@
       </mat-expansion-panel>
     </mat-accordion>
 
-    <ion-grid *ngIf="isSearching">
-      <ion-row *ngFor="let i of filterGrid.rowCounter()">
-        <ion-col *ngFor="let cols of filterGrid.getRow(i)">
-          <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div *ngIf="isSearching">
+      <app-no-content message="Nessun canale trovato" *ngIf="filterGrid.listLength === 0"></app-no-content>
+      <ion-grid *ngIf="filterGrid.listLength !== 0">
+        <ion-row *ngFor="let i of filterGrid.rowCounter()">
+          <ion-col *ngFor="let cols of filterGrid.getRow(i)">
+            <app-daily-channel-item [day]="cols.day" [month]="cols.month" [year]="cols.year" [routerLink]="toMessagePage(cols)"></app-daily-channel-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   </div>
 </ion-content>

@@ -87,7 +87,10 @@ export class ActorChannel extends Channel implements InfoReader{
   // }
 
   getDailyChannels(): Array<any>{
-    return this.dailyChannels.map(ch => ({col1: ch.stringDate, col2: ch.numberOfMessages}));
+    return this.dailyChannels.map(ch => {
+      const d = new Date(ch.timestamp*1000);
+      return {day: d.getDate(), month: d.getMonth()+1, year: d.getFullYear()};
+    });
   }
 
   getPacketsOf(date: string): Packet[]{

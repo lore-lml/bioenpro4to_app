@@ -5,6 +5,7 @@ import {ChannelManagerService} from '../services/channel-manager.service';
 import {HttpChannelManagerService} from '../services/http-channel-manager.service';
 import {ChannelDateFormat, DailyChannelGrid} from './daily-channel-grid.model';
 import {UtilsService} from '../services/utils.service';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-daily-channels',
@@ -21,6 +22,7 @@ export class DailyChannelsPage implements OnInit {
   isSearching: boolean;
   searchingGrid: DailyChannelGrid;
   filterGrid: DailyChannelGrid;
+  mode: string;
   constructor(private activatedRoute: ActivatedRoute,
               private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
@@ -31,36 +33,46 @@ export class DailyChannelsPage implements OnInit {
     this.filterGrid = new DailyChannelGrid([]);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
     this.category = this.categories[category];
-    this.getMessages(() => this.spinnerVisible = false);
+    this.mode = (await this.utils.getValue('network_mode')).mode;
+    await this.getMessages(() => this.spinnerVisible = false);
   }
 
-  getMessages(onComplete?: () => void){
-    /*this.channelList.setChannels(this.channelManager.getDailyChannels(this.id, this.category));
-    this.channelList.sortFilterChannels();*/
-    this.httpChannelManager.dailyChannelsOfActor(this.category, this.id)
-      .subscribe(channels =>{
-        this.channelGrids = channels
-          .sort((c1,c2) => {
-            const a = c1[0];
-            const b = c2[0];
-            return new Date(b.year, b.month, 1).getTime() - new Date(a.year, a.month, 1).getTime();
-          })
-          .map(dateFormats => new DailyChannelGrid(dateFormats));
-        const flatList = this.channelGrids.map(grid => grid.dateList)
-          .reduce((prev, curr) => prev.concat(curr));
-        this.searchingGrid = new DailyChannelGrid(flatList);
-        if (onComplete !== undefined){
-          onComplete();
-        }
-      });
+  async getMessages(onComplete?: () => void){
+    const chObs = this.mode === 'server' ? this.serverMode() : this.tangleMode();
+    chObs.subscribe(channels =>{
+      this.channelGrids = channels
+        .sort((c1,c2) => {
+          const a = c1[0];
+          const b = c2[0];
+          return new Date(b.year, b.month, 1).getTime() - new Date(a.year, a.month, 1).getTime();
+        })
+        .map(dateFormats => new DailyChannelGrid(dateFormats));
+      const flatList = this.channelGrids.map(grid => grid.dateList)
+        .reduce((prev, curr) => prev.concat(curr));
+      this.searchingGrid = new DailyChannelGrid(flatList);
+      if (onComplete !== undefined){
+        onComplete();
+      }
+    });
+  }
+
+  serverMode(){
+    return this.httpChannelManager.dailyChannelsOfActor(this.category, this.id);
+  }
+
+  tangleMode(){
+    return of(this.channelManager.getDailyChannels(this.id, this.category));
   }
 
   async loadContent(ev) {
-    this.getMessages(() => ev.target.complete());
+    if (this.mode === 'server'){
+      await this.channelManager.updateAll();
+    }
+    await this.getMessages(() => ev.target.complete());
   }
 
   filterChannels(ev: any) {

@@ -81,7 +81,17 @@ export class CategoryChannel extends Channel implements InfoReader{
     if (actor === undefined){
       return [];
     }
-    return actor.getDailyChannels();
+    const acc = new Map<string, any[]>();
+    actor.getDailyChannels().forEach(cur =>{
+      const key = `${cur.month}-${cur.year}`;
+      const prev = acc.has(key) ? acc.get(key) : [];
+      prev.push(cur);
+      acc.set(key, prev);
+      return acc;
+    });
+    const res = [];
+    acc.forEach(v => res.push(v));
+    return res;
   }
 
   getPacketsOf(actorId: string, date: string): Packet[]{

@@ -9,8 +9,10 @@ export class UtilsService {
 
   storage: Storage;
   modeReady: Subject<boolean>;
+  switchMode: Subject<any>;
   constructor(private ionicStorage: Storage) {
-    this.modeReady = new Subject<boolean>();
+    this.modeReady = new Subject();
+    this.switchMode = new Subject();
   }
 
   async getValue(key: string){

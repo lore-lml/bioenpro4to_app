@@ -35,6 +35,8 @@ export class SetupComponent implements OnInit {
       const match = this.data.addr.match(/https?:\/\/(.*):([0-9]*)/);
       this.serverAddr = match[1];
       this.serverPort = match[2];
+    }else{
+      this.tangleAddr = this.data.addr;
     }
   }
 

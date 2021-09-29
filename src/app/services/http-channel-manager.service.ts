@@ -35,6 +35,10 @@ export class HttpChannelManagerService {
   set serverURL(url: string){
    this.baseUrl = url;
    this.channelManager = `${this.baseUrl}/channel-manager`;
+   if (!this.feedLoading){
+     this.feedLoading = true;
+     this.updateLoading(true);
+   }
   }
 
   serverInfo(){

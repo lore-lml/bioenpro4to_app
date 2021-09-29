@@ -6,7 +6,7 @@ import {ModalController} from '@ionic/angular';
 import {AlertsComponent} from '../modals/alerts/alerts.component';
 import {HttpChannelManagerService} from '../services/http-channel-manager.service';
 import {UtilsService} from '../services/utils.service';
-import {of} from 'rxjs';
+import {of, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -25,7 +25,8 @@ export class Tab1Page implements OnInit{
   categoryInfo: any;
   root: RootChannel;
   feed: Feed[];
-
+  interval: any;
+  rootSub: Subscription;
   constructor(private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
               private utils: UtilsService,
@@ -45,6 +46,9 @@ export class Tab1Page implements OnInit{
         return of(undefined);
       }
       const mode = (await this.utils.getValue('network_mode')).mode;
+      if (this.rootSub !== undefined){
+        this.rootSub.unsubscribe();
+      }
       if (mode === 'server'){
         this.serverMode();
       }else{
@@ -55,22 +59,33 @@ export class Tab1Page implements OnInit{
 
   serverMode(){
     this.updateFeed();
-    setInterval(() => this.updateFeed(), 60*1000);
+    if (this.interval !== undefined){
+      clearInterval(this.interval);
+    }
+    this.interval = setInterval(() => this.updateFeed(), 60*1000);
   }
 
   tangleMode(){
-    this.channelManager.root.subscribe(root => {
+    this.rootSub = this.channelManager.root.subscribe(root => {
       if (root.state === RootState.ready) {
         this.root = root;
         this.updateFeed(false);
-        setInterval(() => this.updateFeed(false), 60*1000);
+        if (this.interval !== undefined){
+          clearInterval(this.interval);
+        }
+        this.interval = setInterval(() => this.updateFeed(false, true), 60*1000);
       }
     });
   }
 
-  updateFeed(server: boolean = true){
+  updateFeed(server: boolean = true, refreshTangle: boolean = false){
     if (!server){
-      this.feed = this.root.getNewsFeed(10);
+      if (refreshTangle) {
+        console.log('refresh');
+        this.channelManager.updateAll().then(() => this.feed = this.root.getNewsFeed(10));
+      }else{
+        this.feed = this.root.getNewsFeed(10);
+      }
       return;
     }
     this.httpChannelManager.newsFeed(10)

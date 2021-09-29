@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs';
 import {HttpChannelManagerService} from './services/http-channel-manager.service';
 import {UtilsService} from './services/utils.service';
 import {SetupComponent} from './modals/setup/setup.component';
-import {Router} from '@angular/router';
 import {ChannelInfo} from '../../streams_lib/pkg';
 
 @Component({
@@ -16,14 +15,14 @@ import {ChannelInfo} from '../../streams_lib/pkg';
 export class AppComponent implements OnInit, OnDestroy{
   readonly keyMode: string = 'network_mode';
   loading: Subscription;
+  switchSub: Subscription;
   loadPopover: HTMLIonLoadingElement;
-  configDone = false;
+  configDone: boolean;
   constructor(private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
               private utils: UtilsService,
               private modalController: ModalController,
-              private loadingController: LoadingController,
-              private router: Router) {}
+              private loadingController: LoadingController) {}
 
   async ngOnInit() {
     //await this.tangleMode();
@@ -31,17 +30,22 @@ export class AppComponent implements OnInit, OnDestroy{
 
     if (res === null){
       const {data} = await this.showSetupModal();
-      res = await this.storeModConfiguration(data);
+      res = await this.storeModeConfiguration(data);
     }
 
-    if (res.mode === 'server'){
-      await this.serverMode(res.addr);
-    }else{
-      await this.tangleMode(res.addr);
-    }
+    this.switchSub = this.utils.switchMode.subscribe(async mode => {
+      this.configDone = false;
+      if (mode.mode === 'server'){
+        await this.serverMode(mode.addr);
+      }else{
+        await this.tangleMode(mode.addr);
+      }
+    });
+
+    this.utils.switchMode.next(res);
   }
 
-  async storeModConfiguration(data){
+  async storeModeConfiguration(data){
     const res = {mode: data.mode, addr: data.addr};
     await this.utils.storeValue(this.keyMode, res);
     return res;
@@ -63,7 +67,7 @@ export class AppComponent implements OnInit, OnDestroy{
         this.initLoadingPopover().then(load => this.loadPopover = load);
       }
     });
-    await this.router.navigate(['./tabs', 'tab1']);
+
   }
 
   async tangleMode(rootAddr: string){
@@ -103,6 +107,9 @@ export class AppComponent implements OnInit, OnDestroy{
       this.loading.unsubscribe();
     }
     await this.loadPopover.dismiss();
+    if (this.switchSub !== undefined){
+      this.switchSub.unsubscribe();
+    }
   }
 
   initLoadingPopover(): Promise<HTMLIonLoadingElement>{

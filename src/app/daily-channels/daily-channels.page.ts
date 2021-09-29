@@ -43,7 +43,13 @@ export class DailyChannelsPage implements OnInit {
     this.channelList.sortFilterChannels();*/
     this.httpChannelManager.dailyChannelsOfActor(this.category, this.id)
       .subscribe(channels =>{
-        this.channelGrids = channels.map(dateFormats => new DailyChannelGrid(dateFormats));
+        this.channelGrids = channels
+          .sort((c1,c2) => {
+            const a = c1[0];
+            const b = c2[0];
+            return new Date(b.year, b.month, 1).getTime() - new Date(a.year, a.month, 1).getTime();
+          })
+          .map(dateFormats => new DailyChannelGrid(dateFormats));
         const flatList = this.channelGrids.map(grid => grid.dateList)
           .reduce((prev, curr) => prev.concat(curr));
         this.searchingGrid = new DailyChannelGrid(flatList);

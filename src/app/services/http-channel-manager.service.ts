@@ -44,6 +44,7 @@ export class HttpChannelManagerService {
   }
 
   newsFeed(numMsgs: number): Observable<Feed[]>{
+    console.log('feed');
     if (this.updateLoading === undefined){
       console.log('error');
       return of(undefined);

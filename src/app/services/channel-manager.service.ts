@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ChannelInfo} from '../../../streams_lib/pkg';
 import {RootChannel} from '../models/root-channel.model';
-import {ConnectableObservable, Observable, ReplaySubject} from 'rxjs';
-import {multicast} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {Category} from '../models/category-channel.model';
 import {Packet} from '../models/packet.model';
 
@@ -21,7 +20,7 @@ export class ChannelManagerService {
   updateRoot: any;
   loadingObservable: Observable<boolean>;
   updateLoading: any;
-  private rootState;
+  private rootState = RootState.loading;
 
   constructor() {
     this.loadingObservable = new Observable(observer => {

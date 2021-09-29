@@ -73,18 +73,18 @@ export class ActorChannel extends Channel implements InfoReader{
     return res.slice(start, end);
   }
 
-  getLastUpdate(): number {
-    if (this.dailyChannels.length === 0){
-      return 0;
-    }
-    return this.dailyChannels.reduce((previousValue, currentValue) => {
-      if (previousValue.timestamp > currentValue.timestamp){
-        return previousValue;
-      }
-      return currentValue;
-    })
-      .timestamp;
-  }
+  // getLastUpdate(): number {
+  //   if (this.dailyChannels.length === 0){
+  //     return 0;
+  //   }
+  //   return this.dailyChannels.reduce((previousValue, currentValue) => {
+  //     if (previousValue.timestamp > currentValue.timestamp){
+  //       return previousValue;
+  //     }
+  //     return currentValue;
+  //   })
+  //     .timestamp;
+  // }
 
   getDailyChannels(): Array<any>{
     return this.dailyChannels.map(ch => ({col1: ch.stringDate, col2: ch.numberOfMessages}));

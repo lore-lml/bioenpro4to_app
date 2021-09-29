@@ -4,6 +4,7 @@ import {ChannelManagerService} from '../../services/channel-manager.service';
 import {IonSlides} from '@ionic/angular';
 import {ChannelList, SortMode} from '../channel-list.model';
 import {HttpChannelManagerService} from '../../services/http-channel-manager.service';
+import {UtilsService} from '../../services/utils.service';
 
 @Component({
   selector: 'app-scales',
@@ -22,33 +23,35 @@ export class ScalesPage implements OnInit {
   category = Category.scales;
   channelList: ChannelList;
   spinnerVisible: boolean;
+  mode: string;
 
-  constructor(public channelManager: ChannelManagerService, public httpChannelManager: HttpChannelManagerService) {
-    this.channelList = new ChannelList([
-        // {col1: 'xasd', col2: Math.trunc(Date.now() / 1000)},
-        // {col1: 'egas', col2: Math.trunc(Date.now() / 1000) + 180},
-        // {col1: 'ksae', col2: Math.trunc(Date.now() / 1000) + 60},
-        // {col1: 'zzzz', col2: Math.trunc(Date.now() / 1000) + 7886}
-      ],
+  constructor(public channelManager: ChannelManagerService,
+              public httpChannelManager: HttpChannelManagerService,
+              private utils: UtilsService) {
+    this.channelList = new ChannelList([],
       [{title: 'Id Bilancia', mode: SortMode.none}, {title: 'Channel Disponibili', mode: SortMode.none}]
     );
-    // this.channelList.sortFilterChannels();
     this.spinnerVisible = true;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.mode =  (await this.utils.getValue('network_mode')).mode;
     this.getScales(() => this.spinnerVisible = false);
   }
 
-  getScales(onComplete: () => void){
-    /*this.channelList.setChannels(this.channelManager.getActors(this.category));
-    this.channelList.sortFilterChannels();*/
-    this.httpChannelManager.actorsOfCategory(this.category)
-      .subscribe(actors => {
-        this.channelList.setChannels(actors);
-        this.channelList.sortFilterChannels();
-        onComplete();
-      });
+  async getScales(onComplete: () => void){
+    if (this.mode === 'server'){
+      this.httpChannelManager.actorsOfCategory(this.category)
+        .subscribe(actors => {
+          this.channelList.setChannels(actors);
+          this.channelList.sortFilterChannels();
+          onComplete();
+        });
+      return;
+    }
+    this.channelList.setChannels(this.channelManager.getActors(this.category));
+    this.channelList.sortFilterChannels();
+    onComplete();
   }
 
   async segmentChanged() {
@@ -61,8 +64,12 @@ export class ScalesPage implements OnInit {
 
   async loadContent(ev) {
     if(this.segment === 0) {
-      //await this.channelManager.updateAll();
-      this.getScales(() => ev.target.complete());
+      if (this.mode === 'server') {
+        await this.getScales(() => ev.target.complete());
+        return;
+      }
+      await this.channelManager.updateAll();
+      ev.target.complete();
     }else{
       setTimeout(() => ev.target.complete(), 2000);
     }

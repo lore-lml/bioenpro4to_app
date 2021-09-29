@@ -73,7 +73,7 @@ export class CategoryChannel extends Channel implements InfoReader{
   }
 
   getActorsArray(): Array<any> {
-    return this.actorChannels.map(ch => ({col1: ch.actorId, col2: ch.getLastUpdate()}));
+    return this.actorChannels.map(ch => ({col1: ch.actorId, col2: ch.dailyChannels.length}));
   }
 
   getDailyChannels(actorId: string): Array<any>{

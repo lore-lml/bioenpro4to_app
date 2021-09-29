@@ -5,6 +5,7 @@ import {Packet} from '../../models/packet.model';
 import {Category} from '../../models/category-channel.model';
 import {HttpChannelManagerService} from '../../services/http-channel-manager.service';
 import {UtilsService} from '../../services/utils.service';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-generic-message',
@@ -19,6 +20,7 @@ export class GenericMessagePage implements OnInit {
   packets: Packet[] = [];
   category: Category;
   spinnerVisible: boolean;
+  mode: string;
   constructor(private activatedRoute: ActivatedRoute,
               private channelManager: ChannelManagerService,
               private httpChannelManager: HttpChannelManagerService,
@@ -26,23 +28,31 @@ export class GenericMessagePage implements OnInit {
     this.spinnerVisible = true;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.actorId = this.activatedRoute.snapshot.parent.paramMap.get('id');
     const date = this.activatedRoute.snapshot.paramMap.get('date');
     this.date = `${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`;
     const category = this.activatedRoute.snapshot.parent.parent.url[0].path;
     this.category = this.categories[category];
 
-    /*this.packets = this.channelManager.getPacketsOf(this.actorId, this.date, this.category);*/
+    this.mode = (await this.utils.getValue('network_mode')).mode;
     this.getPackets(() => this.spinnerVisible = false);
   }
 
   getPackets(onComplete: () => void){
-    this.httpChannelManager.packetsOf(this.category, this.actorId, this.date)
-      .subscribe(packets => {
+    const packetObs = this.mode === 'server' ? this.serverMode() : this.tangleMode();
+    packetObs.subscribe(packets => {
         this.packets = packets;
         onComplete();
       });
+  }
+
+  serverMode(){
+    return this.httpChannelManager.packetsOf(this.category, this.actorId, this.date);
+  }
+
+  tangleMode(){
+    return of(this.channelManager.getPacketsOf(this.actorId, this.date, this.category));
   }
 
   toJson(msg: any){

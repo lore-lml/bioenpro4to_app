@@ -39,24 +39,19 @@ export class DailyChannel extends Channel{
     return `${hours}.${minutes} - ${sDate}`;
   }
 
-  private static zeroPad(value: number): string{
+  static zeroPad(value: number): string{
     return value >= 10 ? ''+value : '0'+value;
   }
 
-  getNewsFeed(n: number, step: number): Feed[] {
-    const start = step*n;
-    let end = (step+1)*n;
-    const len = this.msgs.length;
-    if (start > len){
+  getNewsFeed(): Feed[] {
+    const found = this.msgs
+      .map(m => new Feed(this.category, this.actorId, m.timestamp))
+      .sort((a, b) => b.timestamp - a.timestamp);
+
+    if (found.length === 0){
       return [];
     }
-    if (end >= len){
-      end = len;
-    }
-
-    return this.msgs.map(m => new Feed(this.category, this.actorId, m.timestamp))
-      .sort((a, b) => b.timestamp - a.timestamp)
-      .slice(start, end);
+    return [found[0]];
   }
 
   async readMsgs(): Promise<boolean> {

@@ -47,8 +47,11 @@ export class ActorChannel extends Channel implements InfoReader{
   }
 
   getNewsFeed(n: number, step: number): Feed[]{
+    const today = new Date();
+    const keyDate = `${DailyChannel.zeroPad(today.getDate())}/${DailyChannel.zeroPad(today.getMonth()+1)}/${today.getFullYear()}`;
     const temp = this.dailyChannels
-      .map(ch => ch.getNewsFeed(n, step));
+      .filter(ch => ch.stringDate === keyDate)
+      .map(ch => ch.getNewsFeed());
 
     if (temp.length <= 0){
       return [];

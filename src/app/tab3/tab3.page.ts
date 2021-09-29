@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ModalController} from '@ionic/angular';
-import {SettingsComponent} from '../modals/settings/settings.component';
+import {SetupComponent} from '../modals/setup/setup.component';
+import {UtilsService} from '../services/utils.service';
 
 @Component({
   selector: 'app-tab3',
@@ -8,13 +9,20 @@ import {SettingsComponent} from '../modals/settings/settings.component';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
+  readonly modeKey: string = 'network_mode';
   title = 'Profile';
-  constructor(public modalController: ModalController) {}
+  constructor(private modalController: ModalController, private utils: UtilsService) {}
 
   async showSettings(){
+    const data = await this.utils.getValue(this.modeKey);
     const modal = await this.modalController.create({
-      component: SettingsComponent,
-      cssClass: 'settings'
+      component: SetupComponent,
+      cssClass: 'settings',
+      showBackdrop: true,
+      componentProps: {
+        locked: false,
+        data
+      }
     });
     await modal.present();
   }

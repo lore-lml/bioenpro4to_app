@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {ChannelManagerService} from '../services/channel-manager.service';
+import {ChannelManagerService, RootState} from '../services/channel-manager.service';
 import {RootChannel} from '../models/root-channel.model';
 import {Feed} from '../models/feed.model';
 import {ModalController} from '@ionic/angular';
 import {AlertsComponent} from '../modals/alerts/alerts.component';
 import {HttpChannelManagerService} from '../services/http-channel-manager.service';
 import {UtilsService} from '../services/utils.service';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -37,23 +38,41 @@ export class Tab1Page implements OnInit{
     this.feed = [];
   }
 
-  ngOnInit() {
-    /*this.channelManager.root.subscribe(root => {
-      if (root.state === RootState.ready) {
-        this.root = root;
-        this.feed = this.root.getNewsFeed(5);
+  async ngOnInit() {
+
+    this.utils.modeReady.subscribe(async res => {
+      if (!res) {
+        return of(undefined);
       }
-    });*/
-    this.utils.modeReady.subscribe(res => {
-      if (!res){
-        return;
+      const mode = (await this.utils.getValue('network_mode')).mode;
+      if (mode === 'server'){
+        this.serverMode();
+      }else{
+        this.tangleMode();
       }
-      this.updateFeed();
-      setInterval(() => this.updateFeed(), 60*1000);
     });
   }
 
-  updateFeed(){
+  serverMode(){
+    this.updateFeed();
+    setInterval(() => this.updateFeed(), 60*1000);
+  }
+
+  tangleMode(){
+    this.channelManager.root.subscribe(root => {
+      if (root.state === RootState.ready) {
+        this.root = root;
+        this.updateFeed(false);
+        setInterval(() => this.updateFeed(false), 60*1000);
+      }
+    });
+  }
+
+  updateFeed(server: boolean = true){
+    if (!server){
+      this.feed = this.root.getNewsFeed(10);
+      return;
+    }
     this.httpChannelManager.newsFeed(10)
       .subscribe(feed => {
         if (feed === undefined){

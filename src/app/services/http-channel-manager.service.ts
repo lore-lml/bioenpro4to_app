@@ -46,15 +46,17 @@ export class HttpChannelManagerService {
   newsFeed(numMsgs: number): Observable<Feed[]>{
     console.log('feed');
     if (this.updateLoading === undefined){
-      console.log('error');
+      console.log('loading func error');
       return of(undefined);
     }
     const path = `${this.channelManager}/actors-last-updates/${numMsgs}`;
     return this.http.get<any[]>(path).pipe(
       map(res => res.map(feed => new Feed(feed.category, feed.actor_id, feed.timestamp))),
       tap(() => {
-        this.feedLoading = false;
-        this.updateLoading(false);
+        if (this.feedLoading){
+          this.feedLoading = false;
+          this.updateLoading(false);
+        }
       })
     );
   }

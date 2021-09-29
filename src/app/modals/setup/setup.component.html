@@ -1,5 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start" *ngIf="!this.locked" (click)="closeModal()">
+      <ion-button>
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
       {{title}}
     </ion-title>
@@ -55,7 +60,7 @@
   </section>
 
   <section class="mybuttons">
-    <ion-button expand="block" color="success" (click)="confirm()">Conferma</ion-button>
-    <ion-button expand="block" color="danger" *ngIf="!locked">Chiudi</ion-button>
+    <ion-button expand="block" color="success" (click)="closeModal(true)">Conferma</ion-button>
+    <ion-button expand="block" color="danger" (click)="closeModal()" *ngIf="!locked">Chiudi</ion-button>
   </section>
 </ion-content>

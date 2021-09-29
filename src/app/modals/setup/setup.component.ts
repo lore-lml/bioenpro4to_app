@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController, PopoverController} from '@ionic/angular';
-import {RootChannelInputComponent} from '../settings/root-channel-input/root-channel-input.component';
 import {UtilsService} from '../../services/utils.service';
 
 @Component({
@@ -11,6 +10,7 @@ import {UtilsService} from '../../services/utils.service';
 export class SetupComponent implements OnInit {
   readonly title: string = 'Configurazione App';
   locked: boolean;
+  data: any;
 
   selectedMode: string;
   secureHttp: boolean;
@@ -25,21 +25,37 @@ export class SetupComponent implements OnInit {
     this.err = '';
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.data === undefined){
+      return;
+    }
+    this.selectedMode = this.data.mode;
+    if (this.data.mode === 'server'){
+      this.secureHttp = this.data.addr.includes('https');
+      const match = this.data.addr.match(/https?:\/\/(.*):([0-9]*)/);
+      this.serverAddr = match[1];
+      this.serverPort = match[2];
+    }
+  }
 
   sourceChange(ev: any) {
     this.selectedMode = ev.target.value;
   }
 
-  async closeModal(){
+  async closeModal(save: boolean = false){
+    if (!save){
+      await this.modalController.dismiss();
+      return;
+    }
+
     let data;
     if (this.selectedMode === 'tangle'){
       if (!this.utils.checkChannelAddr(this.tangleAddr)){
         return;
       }
       data = {
-        selectedMode: this.selectedMode,
-        tangleAddr: this.tangleAddr
+        mode: this.selectedMode,
+        addr: this.tangleAddr
       };
     }else{
       if (!this.utils.checkServerPort(this.serverPort)){
@@ -47,25 +63,10 @@ export class SetupComponent implements OnInit {
       }
       const http = this.secureHttp ? 'https':'http';
       data = {
-        selectedMode: this.selectedMode,
-        serverAddr: `${http}://${this.serverAddr}:${this.serverPort}`
+        mode: this.selectedMode,
+        addr: `${http}://${this.serverAddr}:${this.serverPort}`
       };
     }
     await this.modalController.dismiss(data);
-  }
-
-  async showRootChannelInput() {
-    const popover = await this.popoverController.create({
-      component: RootChannelInputComponent,
-      cssClass: 'my-custom-class',
-      translucent: true
-    });
-    await popover.present();
-    const {data} = await popover.onDidDismiss();
-    console.log(data);
-  }
-
-  confirm() {
-    this.closeModal();
   }
 }

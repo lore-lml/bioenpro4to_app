@@ -6,6 +6,7 @@ import {HttpChannelManagerService} from './services/http-channel-manager.service
 import {UtilsService} from './services/utils.service';
 import {SetupComponent} from './modals/setup/setup.component';
 import {Router} from '@angular/router';
+import {ChannelInfo} from '../../streams_lib/pkg';
 
 @Component({
   selector: 'app-root',
@@ -35,14 +36,13 @@ export class AppComponent implements OnInit, OnDestroy{
 
     if (res.mode === 'server'){
       await this.serverMode(res.addr);
+    }else{
+      await this.tangleMode(res.addr);
     }
   }
 
   async storeModConfiguration(data){
-    if (data.selectedMode === 'tangle'){
-      return;
-    }
-    const res = {mode: data.selectedMode, addr: data.serverAddr};
+    const res = {mode: data.mode, addr: data.addr};
     await this.utils.storeValue(this.keyMode, res);
     return res;
   }
@@ -53,6 +53,7 @@ export class AppComponent implements OnInit, OnDestroy{
     this.loading = this.httpChannelManager.loadingObservable.subscribe(isLoading => {
       if (!this.configDone) {
         this.utils.modeReady.next(true);
+        setTimeout(() => this.utils.modeReady.next(true), 2000);
         this.configDone = true;
       }
       if (isLoading){
@@ -65,12 +66,18 @@ export class AppComponent implements OnInit, OnDestroy{
     await this.router.navigate(['./tabs', 'tab1']);
   }
 
-  async tangleMode(){
+  async tangleMode(rootAddr: string){
+    const addr = rootAddr.split(':');
     this.loadPopover = await this.initLoadingPopover();
     this.loading = this.channelManager.loadingObservable.subscribe(isLoading => {
+      if (!this.configDone) {
+        this.utils.modeReady.next(true);
+        setTimeout(() => this.utils.modeReady.next(true), 2000);
+        this.configDone = true;
+      }
       if (isLoading){
         this.loadPopover.present();
-        this.channelManager.init().catch(e => console.log(e));
+        this.channelManager.init(new ChannelInfo(addr[0], addr[1])).catch(e => console.log(e));
       }else{
         this.loadPopover.dismiss();
         this.initLoadingPopover().then(load => this.loadPopover = load);
@@ -82,6 +89,7 @@ export class AppComponent implements OnInit, OnDestroy{
     const modal = await this.modalController.create({
       component: SetupComponent,
       cssClass: 'setup',
+      backdropDismiss: false,
       componentProps: {
         locked: true
       }

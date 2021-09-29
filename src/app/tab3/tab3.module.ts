@@ -6,8 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { Tab3Page } from './tab3.page';
 
 import { Tab3PageRoutingModule } from './tab3-routing.module';
-import {SettingsComponent} from '../modals/settings/settings.component';
-import {RootChannelInputComponent} from '../modals/settings/root-channel-input/root-channel-input.component';
 
 @NgModule({
   imports: [
@@ -17,6 +15,6 @@ import {RootChannelInputComponent} from '../modals/settings/root-channel-input/r
     RouterModule.forChild([{ path: '', component: Tab3Page }]),
     Tab3PageRoutingModule,
   ],
-  declarations: [Tab3Page, SettingsComponent, RootChannelInputComponent]
+  declarations: [Tab3Page]
 })
 export class Tab3PageModule {}
